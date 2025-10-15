@@ -4,7 +4,7 @@ This repository has the purpose to answer the question: How do energy prices at 
 
 We use data from Bair, L., and Yackulic, C. (2024). "Predicted hydropower impacts of different management scenarios for Lake Powell releases." U.S. Geological Survey data release. https://doi.org/10.5066/P135BOD8.
 
-A plot is shown for Monthly Release volume vs month for different time series of Annual releases.
+A plot is shown _____
 
 ## Findings
 1. The high release volume months are January, February, March, June, July, and August.

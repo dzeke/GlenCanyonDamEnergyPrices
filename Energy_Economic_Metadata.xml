@@ -1,0 +1,403 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<metadata>
+  <idinfo>
+    <citation>
+      <citeinfo>
+        <origin>Lucas S Bair</origin>
+        <origin>Charles B Yackulic</origin>
+        <pubdate>20240405</pubdate>
+        <title>Predicted hydropower impacts of different management scenarios for Lake Powell releases</title>
+        <geoform>tabular data</geoform>
+        <pubinfo>
+          <pubplace>Flagstaff, AZ</pubplace>
+          <publish>U.S. Geological Survey</publish>
+        </pubinfo>
+        <othercit>Additional information about Originators: Bair, Lucas S, https://orcid.org/0000-0002-9911-3624; Yackulic, Charles B, https://orcid.org/0000-0001-9661-0724</othercit>
+        <onlink>https://doi.org/10.5066/P135BOD8</onlink>
+        <lworkcit>
+          <citeinfo>
+            <origin>Charles B Yackulic</origin>
+            <origin>Lucas S Bair</origin>
+            <origin>Drew E Eppehimer</origin>
+            <origin>Gerard L Salter</origin>
+            <origin>Bridget R Deemer</origin>
+            <origin>Bradley J Butterfield</origin>
+            <origin>Alan Kasprak</origin>
+            <origin>Joshua J Caster</origin>
+            <origin>Helen C Fairley</origin>
+            <origin>Paul E Grams</origin>
+            <origin>Bryce Mihalevich</origin>
+            <origin>Emily C Palmquist</origin>
+            <origin>Joel B Sankey</origin>
+            <pubdate>2024</pubdate>
+            <title>Modeling the impacts of Glen Canyon Dam operations on Colorado River resources</title>
+            <geoform>cooperator publication</geoform>
+            <serinfo>
+            </serinfo>
+            <pubinfo>
+              <pubplace>Flagstaff, Arizona</pubplace>
+              <publish>U.S. Geological Survey</publish>
+            </pubinfo>
+            <onlink>https://www.usbr.gov/uc/progact/amp/pdfs/LTEMP/20240408-ModelingImpactsGlenCanyonDamOperationsColoradoRiverResources-508-UCRO.pdf</onlink>
+          </citeinfo>
+        </lworkcit>
+      </citeinfo>
+    </citation>
+    <descript>
+      <abstract>These data were compiled to predict hourly Glen Canyon Dam operations and hydropower impacts. The objective of our study was to estimate hydropower impacts under different future LTEMP sEIS alternatives. These data represent hourly outflow in cubic feet per second, generation in megawatt hours, and economic value of hydropower in nominal dollars. These data were created for operations at Glen Canyon Dam for October 2023 through November 2027. These data were created by the U.S. Geological Survey, Southwest Biological Science Center, Grand Canyon Monitoring and Research Cetner using mathematical modeling methods.</abstract>
+      <purpose>These data can be used to estimate changes in hourly outflow, generation, and economic value of hydropower generation between LTEMP sEIS alternatives.</purpose>
+      <supplinf>These data provide hourly outflow, generation and economic value of hydropower at Glen Canyon Dam across 30 traces and 50 months. These data are not intended to estimate the financial impacts to the Department of Energy or individual utilities. These data are also not intended to estimate individual rate payer impacts, changes in capacity, or changes in electricity sector emissions.</supplinf>
+    </descript>
+    <timeperd>
+      <timeinfo>
+        <rngdates>
+          <begdate>2023</begdate>
+          <enddate>2027</enddate>
+        </rngdates>
+      </timeinfo>
+      <current>ground condition</current>
+    </timeperd>
+    <status>
+      <progress>Complete</progress>
+      <update>None planned</update>
+    </status>
+    <spdom>
+      <bounding>
+        <westbc>-114.02</westbc>
+        <eastbc>-110.84</eastbc>
+        <northbc>37.22</northbc>
+        <southbc>35.74</southbc>
+      </bounding>
+      <descgeog>Upper Colorado River Basin</descgeog>
+    </spdom>
+    <keywords>
+      <theme>
+        <themekt>USGS Thesaurus</themekt>
+        <themekey>business and economics</themekey>
+        <themekey>energy resources</themekey>
+        <themekey>hydrologic processes</themekey>
+        <themekey>mathematical modeling</themekey>
+        <themekey>power generation water use</themekey>
+        <themekey>river systems</themekey>
+        <themekey>streamflow</themekey>
+        <themekey>water resources</themekey>
+      </theme>
+      <theme>
+        <themekt>USGS Metadata Identifier</themekt>
+        <themekey>USGS:65d6810ed34ec3e1801d2c84</themekey>
+      </theme>
+      <theme>
+        <themekt>USGS information products</themekt>
+        <themekey>data release</themekey>
+      </theme>
+      <theme>
+        <themekt>ISO 19115 Topic Categories</themekt>
+        <themekey>economy</themekey>
+        <themekey>InlandWaters</themekey>
+      </theme>
+      <theme>
+        <themekt>None</themekt>
+        <themekey>dam</themekey>
+        <themekey>economic value</themekey>
+        <themekey>electricity</themekey>
+        <themekey>energy</themekey>
+        <themekey>hydropower</themekey>
+        <themekey>generation</themekey>
+        <themekey>power</themekey>
+        <themekey>regulated river</themekey>
+      </theme>
+      <place>
+        <placekt>Geographic Names Information System (GNIS)</placekt>
+        <placekey>Arizona</placekey>
+        <placekey>Colorado River</placekey>
+        <placekey>Glen Canyon</placekey>
+        <placekey>Grand Canyon</placekey>
+        <placekey>Lake Powell</placekey>
+      </place>
+      <place>
+        <placekt>Getty Thesaurus of Geographic Names Online</placekt>
+        <placekey>Glen Canyon Dam</placekey>
+      </place>
+    </keywords>
+    <accconst>none</accconst>
+    <useconst>none</useconst>
+    <ptcontac>
+      <cntinfo>
+        <cntperp>
+          <cntper>Lucas S Bair</cntper>
+          <cntorg>U.S. Geological Survey</cntorg>
+        </cntperp>
+        <cntpos>Economist</cntpos>
+        <cntaddr>
+          <addrtype>mailing and physical</addrtype>
+          <address>2255 North Gemini Drive</address>
+          <city>Flagstaff</city>
+          <state>AZ</state>
+          <postal>86001</postal>
+          <country>United States</country>
+        </cntaddr>
+        <cntvoice>928-556-7362</cntvoice>
+        <cntemail>lbair@usgs.gov</cntemail>
+      </cntinfo>
+    </ptcontac>
+    <datacred>This work was supported by the U.S. Bureau of Reclamation.</datacred>
+    <crossref>
+      <citeinfo>
+        <origin>Department of Interior</origin>
+        <pubdate>2016</pubdate>
+        <title>Record of Decision for the Glen Canyon Dam Long-Term Experimental and Management Plan Final Environmental Impact Statement</title>
+        <pubinfo>
+          <pubplace>Glen Canyon Dam Long-Term Experimental and Management Plan (LTEMP) Environmental Impact Statement (EIS) (online)</pubplace>
+          <publish>Bureau of Reclamation</publish>
+        </pubinfo>
+        <onlink>https://ltempeis.anl.gov/documents/docs/LTEMP_ROD.pdf</onlink>
+      </citeinfo>
+    </crossref>
+    <crossref>
+      <citeinfo>
+        <origin>David A. Harpman</origin>
+        <pubdate>1999</pubdate>
+        <title>Assessing the Short-Run Economic Cost of Environmental Constraints on Hydropower Operations at Glen Canyon Dam</title>
+        <pubinfo>
+          <pubplace>Journal Storage - JSTOR (online)</pubplace>
+          <publish>Land Economic</publish>
+        </pubinfo>
+        <onlink>https://doi.org/10.2307/3147185</onlink>
+      </citeinfo>
+    </crossref>
+    <crossref>
+      <citeinfo>
+        <origin>Sarah Waldo</origin>
+        <origin>Bridget R. Deemer</origin>
+        <origin>Lucas S. Bair</origin>
+        <origin>Jake J. Beaulieu</origin>
+        <pubdate>2021</pubdate>
+        <title>Greenhouse gas emissions from an arid-zone reservoir and their environmental policy significance: Results from existing global models and an exploratory dataset</title>
+        <pubinfo>
+          <pubplace>ScienceDirect (online)</pubplace>
+          <publish>Environmental Science &amp; Policy</publish>
+        </pubinfo>
+        <onlink>https://doi.org/10.1016/j.envsci.2021.02.006</onlink>
+      </citeinfo>
+    </crossref>
+  </idinfo>
+  <dataqual>
+    <attracc>
+      <attraccr>Error associated with the model estimates is described in the documentation of the published models.</attraccr>
+    </attracc>
+    <logic>Attribute values are within expected ranges.</logic>
+    <complete>Data set is considered complete for the information presented, as described in the abstract. Users are advised to read the rest of the metadata record carefully for additional details.</complete>
+    <lineage>
+      <srcinfo>
+        <srccite>
+          <citeinfo>
+            <origin>California Independent System Operator</origin>
+            <pubdate>2024</pubdate>
+            <title>Palo Verde price data</title>
+            <geoform>tabular data</geoform>
+            <pubinfo>
+              <pubplace>California ISO Open Access Same-time Information System (OASIS)</pubplace>
+              <publish>California Independent System Operator</publish>
+            </pubinfo>
+            <onlink>http://oasis.caiso.com/mrioasis/logon.do</onlink>
+          </citeinfo>
+        </srccite>
+        <typesrc>digital tabular data</typesrc>
+        <srctime>
+          <timeinfo>
+            <rngdates>
+              <begdate>20200201</begdate>
+              <enddate>20231130</enddate>
+            </rngdates>
+          </timeinfo>
+          <srccurr>publication date</srccurr>
+        </srctime>
+        <srccitea>price data</srccitea>
+        <srccontr>These data were used to estimate the economic value of generation.</srccontr>
+      </srcinfo>
+      <srcinfo>
+        <srccite>
+          <citeinfo>
+            <origin>Bureau of Reclamation</origin>
+            <pubdate>2024</pubdate>
+            <title>Glen Canyon Dam outflow data</title>
+            <geoform>tabular data</geoform>
+            <pubinfo>
+              <pubplace>Bureau of Reclamation, Hydrologic Database (HDB) Data Query</pubplace>
+              <publish>Bureau of Reclamation</publish>
+            </pubinfo>
+            <onlink>https://www.usbr.gov/lc/region/g4000/riverops/_HdbWebQuery.html</onlink>
+          </citeinfo>
+        </srccite>
+        <typesrc>digital tabular data</typesrc>
+        <srctime>
+          <timeinfo>
+            <rngdates>
+              <begdate>20200201</begdate>
+              <enddate>20231130</enddate>
+            </rngdates>
+          </timeinfo>
+          <srccurr>publication date</srccurr>
+        </srctime>
+        <srccitea>outflow data</srccitea>
+        <srccontr>These data were used to estimate the outflow data</srccontr>
+      </srcinfo>
+      <srcinfo>
+        <srccite>
+          <citeinfo>
+            <origin>ARGUS Direct</origin>
+            <pubdate>2024</pubdate>
+            <title>Palo Verde price data</title>
+            <geoform>tabular data</geoform>
+            <pubinfo>
+              <pubplace>Publication Place:</pubplace>
+              <publish>ARGUS Direct</publish>
+            </pubinfo>
+            <onlink>https://direct.argusmedia.com/</onlink>
+          </citeinfo>
+        </srccite>
+        <typesrc>digital tabular data</typesrc>
+        <srctime>
+          <timeinfo>
+            <rngdates>
+              <begdate>20200201</begdate>
+              <enddate>20231130</enddate>
+            </rngdates>
+          </timeinfo>
+          <srccurr>publication date</srccurr>
+        </srctime>
+        <srccitea>Aprice data</srccitea>
+        <srccontr>These data were used to estimate the economic value of generation</srccontr>
+      </srcinfo>
+      <procstep>
+        <procdesc>Development of the generation_hourly_CM_15 to generation_hourly_nobypass data tables (11): Using hourly release volumes in cubic feet per second from the hourly_cfs_FS_CM_15 to hourly_cfs_nobypass data tables (11) and reservoir elevation, hourly generation estimates in megawatt hours were predicted.</procdesc>
+        <procdate>2023</procdate>
+      </procstep>
+      <procstep>
+        <procdesc>Development of the hourly_cfs_FS_CM_15 to hourly_cfs_nobypass data tables (11): Using monthly release volumes in acre feet and estimates of energy generation scheduling at Glen Canyon Dam, hourly outflow estimates in cubic feet per second were predicted.</procdesc>
+        <procdate>2023</procdate>
+      </procstep>
+      <procstep>
+        <procdesc>Development of the econ_hourly_CM_15 to econ_hourly_nobypass data table (11): Using hourly generation from the generation_hourly_CM_15 to generation_hourly_nobypass data tables (11) and hourly price estimates from the Palo Verde Hub, the economic value of hydropower was predicted.</procdesc>
+        <procdate>2023</procdate>
+      </procstep>
+      <procstep>
+        <procdesc>Data Quality Assessment and Quality Control (QAQC): In 2024 the Bureau of Reclamation reviewed the individual output files.
+
+Quality Assurance (QA) - A Quality Assurance Plan (QAP) was not created to define the criteria and processes that would ensure and verify that data met specific data-quality objectives. QA refers to utilizing written criteria, methods and processes that will ensure the production of data that meet a specified quality standard.
+
+Quality Control (QC) - Quality control (QC) of data refers to the application of methods or processes that determine whether data meet overall quality goals and defined quality criteria for individual values. In order to determine whether data are 'good' or 'bad' - or to what degree they are so - one must have a set of quality goals and specific criteria against which data are evaluated. Rapid data scanning methods can be used to tag records or sets of records that meet or fail to meet a particular criterion. Remember that QC is a partner to QA, because when errors are found, a way to prevent them via QA might also be revealed.</procdesc>
+        <procdate>2023</procdate>
+      </procstep>
+      <procstep>
+        <procdesc>Finalize Data for Dissemination: Data sent to the Southwest Biological Science Center Data Steward for dissemination and preservation per USGS Data Management Policies SM 502.6, SM 502.7, SM 502.8 and SM 502.9 (1 October 2016).</procdesc>
+        <procdate>2024</procdate>
+      </procstep>
+    </lineage>
+  </dataqual>
+  <eainfo>
+    <detailed>
+      <enttyp>
+        <enttypl>generation_hourly_CM_15 to generation_hourly_nobypass (11 tables)</enttypl>
+        <enttypd>These 11 data tables represent hourly generation at Glen Canyon Dam in megawatt hours by hour, month and hydrologic trace in the LTEM sEIS. The purpose of these data tables are to allow for a comparison of the difference in generation between LTEMP eEIS alternatives. Columns are hours in a month. Rows are month and 30 hydrologic traces. For example, the first 30 rows are the 30 hydrologic traces in the LTEMP sEIS (1991-2020) for the month of October 2023. Rows 31-60 are the 30 hydrologic traces in the LTEMP sEIS (1991-2020) for the month of November 2023. Rows 1471-1500 are the 30 hydrologic traces in the LTEMP sEIS (1991-2020) for the month of November 2027. The 11 data tables are separate 1500 by 744 matrices. The months with days less than 31 days contain "0" entries for those hours and days.</enttypd>
+        <enttypds>Producer defined</enttypds>
+      </enttyp>
+      <attr>
+        <attrlabl>hour_1 to hour_744</attrlabl>
+        <attrdef>Columns hour_1 to hour_744 in the data table represents megawatt hours by hour, month and hydrologic trace in the LTEM sEIS. Months with days less than 31 days contain "0" entries for those hours and days.</attrdef>
+        <attrdefs>Producer defined</attrdefs>
+        <attrdomv>
+          <rdom>
+            <rdommin>0</rdommin>
+            <rdommax>1361.76018761624</rdommax>
+            <attrunit>megawatt hours</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+    </detailed>
+    <detailed>
+      <enttyp>
+        <enttypl>hourly_cfs_FS_CM_15 to hourly_cfs_nobypass (11 tables)</enttypl>
+        <enttypd>These 11 data tables represent hourly outflow below Glen Canyon Dam in cubic feet per second by hour, month and hydrologic trace in the LTEM sEIS. The purpose of these data tables are to allow for a comparison of the difference in outflow between LTEMP eEIS alternatives. Columns are hours in a month. Rows are month and 30 hydrologic traces. For example, the first 30 rows are the 30 hydrologic traces in the LTEMP sEIS (1991-2020) for the month of October 2023. Rows 31-60 are the 30 hydrologic traces in the LTEMP sEIS (1991-2020) for the month of November 2023. Rows 1471-1500 are the 30 hydrologic traces in the LTEMP sEIS (1991-2020) for the month of November 2027. The 11 data tables are separate 1500 by 744 matrices. The months with days less than 31 days contain "0" entries for those hours and days.</enttypd>
+        <enttypds>Producer defined</enttypds>
+      </enttyp>
+      <attr>
+        <attrlabl>hour_1 to hour_744</attrlabl>
+        <attrdef>Columns hour_1 to hour_744 in the data table represents cubic feet per second by hour, month and hydrologic trace in the LTEM sEIS. Months with days less than 31 days contain "0" entries for those hours and days.</attrdef>
+        <attrdefs>Producer defined</attrdefs>
+        <attrdomv>
+          <rdom>
+            <rdommin>0</rdommin>
+            <rdommax>45000</rdommax>
+            <attrunit>cubic feet per second</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+    </detailed>
+    <detailed>
+      <enttyp>
+        <enttypl>econ_hourly_CM_15 to econ_hourly_nobypass (11 tables)</enttypl>
+        <enttypd>These 11 data tables represent the economic value of energy generated at Glen Canyon Dam in nominal dollars by hour, month and hydrologic trace in the LTEM sEIS. The purpose of these data tables are to allow for a comparison of the difference in economic value between LTEMP sEIS alternatives. Columns are hours in a month. Rows are month and 30 hydrologic traces. For example, the first 30 rows are the 30 hydrologic traces in the LTEMP sEIS (1991-2020) for the month of October 2023. Rows 31-60 are the 30 hydrologic traces in the LTEMP sEIS (1991-2020) for the month of November 2023. Rows 1471-1500 are the 30 hydrologic traces in the LTEMP sEIS (1991-2020) for the month of November 2027. The 11 data tables are separate 1500 by 744 matrices. The months with days less than 31 days contain "0" entries for those hours and days.</enttypd>
+        <enttypds>Producer defined</enttypds>
+      </enttyp>
+      <attr>
+        <attrlabl>hour_1 to hour_744</attrlabl>
+        <attrdef>Columns hour_1 to hour_744 in the data table represent economic value by hour, month and hydrologic trace in the LTEM sEIS.</attrdef>
+        <attrdefs>Producer defined</attrdefs>
+        <attrdomv>
+          <rdom>
+            <rdommin>-2095.92201832386</rdommin>
+            <rdommax>397966.76898935</rdommax>
+            <attrunit>nominal dollars</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+    </detailed>
+  </eainfo>
+  <distinfo>
+    <distrib>
+      <cntinfo>
+        <cntperp>
+          <cntper>GS ScienceBase</cntper>
+          <cntorg>U.S. Geological Survey</cntorg>
+        </cntperp>
+        <cntaddr>
+          <addrtype>mailing and physical</addrtype>
+          <address>Denver Federal Center, Building 810, Mail Stop 302</address>
+          <city>Denver</city>
+          <state>CO</state>
+          <postal>80225</postal>
+          <country>United States</country>
+        </cntaddr>
+        <cntvoice>1-888-275-8747</cntvoice>
+        <cntemail>sciencebase@usgs.gov</cntemail>
+      </cntinfo>
+    </distrib>
+    <distliab>The author(s) of these data request that data users contact them regarding intended use and to assist with understanding limitations and interpretation. Unless otherwise stated, all data, metadata and related materials are considered to satisfy the quality standards relative to the purpose for which the data were collected. Although these data and associated metadata have been reviewed for accuracy and completeness and approved for release by the U.S. Geological Survey (USGS), no warranty expressed or implied is made regarding the display or utility of the data for other purposes, nor on all computer systems, nor shall the act of distribution constitute any such warranty.</distliab>
+    <techpreq>These files contain data available in comma-separated values (csv) format. The user must have software capable of displaying the data table.</techpreq>
+  </distinfo>
+  <metainfo>
+    <metd>20240412</metd>
+    <metc>
+      <cntinfo>
+        <cntperp>
+          <cntper>Lucas S Bair</cntper>
+          <cntorg>U.S. Geological Survey</cntorg>
+        </cntperp>
+        <cntpos>Economist</cntpos>
+        <cntaddr>
+          <addrtype>mailing and physical</addrtype>
+          <address>2255 North Gemini Drive</address>
+          <city>Flagstaff</city>
+          <state>AZ</state>
+          <postal>86001</postal>
+          <country>United States</country>
+        </cntaddr>
+        <cntvoice>928-556-7362</cntvoice>
+        <cntemail>lbair@usgs.gov</cntemail>
+      </cntinfo>
+    </metc>
+    <metstdn>Content Standard for Digital Geospatial Metadata</metstdn>
+    <metstdv>FGDC-STD-001-1998</metstdv>
+  </metainfo>
+</metadata>
