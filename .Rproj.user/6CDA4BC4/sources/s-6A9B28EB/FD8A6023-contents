@@ -46,12 +46,13 @@ rm(list = ls())  #Clear history
 
 
 
+### Read in the Generation and Economic Data
+sGenData <- 'generation/generation_hourly_noaction.csv'
+sEconData <- 'econ/econ_hourly_noaction.csv'
 
-### Read in the Monthly Release datas
-# Note used in calc of Mead Inflow. But keep anyway for backward compatibility
-sCRSSDataFile <- 'Powell-MonthlyReleaseSchedule.txt'
-dfMonthlyRelease <- read.csv(file = sCRSSDataFile, header = FALSE, sep = " ", quote = "\"",
-         dec = ".", fill = TRUE, comment.char = "#")
+dfGenerationData <- read.csv(file = sGenData, header = TRUE)
+dfEconData <- read.csv(file = sEconData, header = TRUE)
+
 
 # Rename the columns/variables to the annual flow amount
 
