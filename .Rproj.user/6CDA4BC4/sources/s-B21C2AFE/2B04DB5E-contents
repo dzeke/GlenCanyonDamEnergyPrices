@@ -21,7 +21,7 @@
 #             So the generation data frame has Columns of [Year][Month][Trace][Hour][Generation]
 #             So  the Econ data frame has Columns of [Year][Month][Trace][Hour][Value]
 #
-#       5. Join the two tables on Month, Trace, and Hour so we have a new data frame with columns [Year][Month][Trace][Hour][Generation][Value]
+#       5. Join the two tables on Year, Month, Trace, and Hour so we have a new data frame with columns [Year][Month][Trace][Hour][Generation][Value]
 #
 #       6. Divide the Value column by Generation column to get a Price in $/MW-hour
 #
@@ -77,39 +77,30 @@ dfEconData$Trace <- cTraces
 
 ### Step 4. Convert the data frames to narrow format
 #             So the generation data frame has Columns of [Year][Month][Trace][Hour][Generation]
-#             So  the Econ data frame has Columns of [Year][Month][Trace][Hour][Value]
+#             So  the Econ data frame has Columns of [Year][Month][Trace][Hour][DollarValue]
 #
 
+#Create a list of all hours from 1 to 744
+cHours <- c("hour_1")
+for (i in seq(2,744,1)) {
+  cHours <- c(cHours, paste0("hour_",i))
+}
+  
+dfGenerationDataLong <- melt(dfGenerationData, id.vars = c("Year","Month", "Trace"), measure.vars = cHours, variable.name = "HourText", value.name = "Generation" )
+dfEconDataLong <- melt(dfEconData, id.vars = c("Year","Month", "Trace"), measure.vars = cHours, variable.name = "HourText", value.name = "DollarValue" )
 
+### Step 5. Join the two tables on Year, Month, Trace, and Hour so we have a new data frame with columns [Year][Month][Trace][Hour][Generation][Value]
+dfAllData <- inner_join(dfGenerationDataLong, dfEconDataLong, by = c("Year" = "Year", "Month" = "Month", "Trace" = "Trace", "HourText" = "HourText"))
 
-# Rename the columns/variables to the annual flow amount
+#Convert Hour in month as text to hour in month as number (1 to 744)
+dfAllData$HourInMonth <- as.numeric(gsub("[^0-9.]", "", dfAllData$HourText))
 
-nAnnualVolumes <- c(7, 7.48, 8.23, seq(9.0, 17.5, 0.5), 18, 20, 30, 50, 75,100)
-colnames(dfMonthlyRelease) <- as.character(nAnnualVolumes)
-#Remove the 100 column
-#dfMonthlyRelease <- subset(dfMonthlyRelease, select = -c("100"))
-
-#Add column for numeric month
-dfMonthlyRelease$Month <- c(10, 11, 12, seq(1,9,1))
-#Add column for text month
-dfMonthlyRelease$MonthTxt <- month.abb[dfMonthlyRelease$Month]
-
-#Reshape wide format (annual releases as columns) to long
-dfMonthlyReleaseLong <- reshape(data = dfMonthlyRelease, 
-                                idvar = c("Month","MonthTxt"), 
-                                varying = as.character(nAnnualVolumes), 
-                                v.names = "Monthly Release", 
-                                timevar = "Annual Release Volume",
-                                times = as.character(nAnnualVolumes),
-                                #new.row.names = 1:(length(nAnnualVolumes)*12)
-                                direction="long")
-
-#Convert Annual Release Volume to numeric
-dfMonthlyReleaseLong$`Annual Release Volume` <- as.numeric(dfMonthlyReleaseLong$`Annual Release Volume`)
-dfMonthlyReleaseLong$`Annual Release VolumeMAF` <- as.factor(as.numeric(dfMonthlyReleaseLong$`Annual Release Volume`))
-
-#Plot by month
-
+#Sort the dataframe by Year, Month, Trace, Hour
+dfAllData <- dfAllData %>% arrange(Year, Month, Trace, HourInMonth)
+#Convert the hour in month to hour of the day
+dfAllData$Hour <-  mod(dfAllData$HourInMonth-1,24)
+#Calculate the day of the month
+dfAllData$Day <- round((dfAllData$HourInMonth)/24 + 0.4999)
 
 cColorsToPlot <- colorRampPalette((brewer.pal(9, "Blues")))(length(nAnnualVolumes))
 
