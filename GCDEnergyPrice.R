@@ -18,14 +18,16 @@
 #       3. Add row labels to differentiate each row.
 #
 #       4. Convert the Generation and Econ data frames to Narrow format.
-#             So the generation data frame has Columns of [Year][Month][Trace][Hour][Generation]
-#             So  the Econ data frame has Columns of [Year][Month][Trace][Hour][Value]
+#             So the generation data frame has Columns of [Year][Month][Trace][HourAsText][Generation]
+#             So  the Econ data frame has Columns of [Year][Month][Trace][HourAsText][Value]
 #
-#       5. Join the two tables on Year, Month, Trace, and Hour so we have a new data frame with columns [Year][Month][Trace][Hour][Generation][Value]
+#       5. Join the two tables on Year, Month, Trace, and HourAsText so we have a new data frame with columns [Year][Month][Trace][HourAsText][Generation][Value]
 #
-#       6. Divide the Value column by Generation column to get a Price in $/MW-hour
+#       6. Convert the HourAsText from 1 to 744 to numerical hour, Calculate the day of month, hour of day, and on-peak/off-peak for each row.
 #
-#       7. Plot the pricing data in different formats.
+#       7. Divide the Value column by Generation column to get a Price in $/MW-hour. Set rows with Zero generation to NA
+#
+#       8. Plot the pricing data in different formats.
 #
 #     David E. Rosenberg
 #     October 15, 2025
@@ -92,6 +94,7 @@ dfEconDataLong <- melt(dfEconData, id.vars = c("Year","Month", "Trace"), measure
 ### Step 5. Join the two tables on Year, Month, Trace, and Hour so we have a new data frame with columns [Year][Month][Trace][Hour][Generation][Value]
 dfAllData <- inner_join(dfGenerationDataLong, dfEconDataLong, by = c("Year" = "Year", "Month" = "Month", "Trace" = "Trace", "HourText" = "HourText"))
 
+### Step 6. Convert the HourAsText from 1 to 744 to numerical hour, day of month, hour of day, and on-peak/off-peak for each row.
 #Convert Hour in month as text to hour in month as number (1 to 744)
 dfAllData$HourInMonth <- as.numeric(gsub("[^0-9.]", "", dfAllData$HourText))
 
@@ -101,6 +104,14 @@ dfAllData <- dfAllData %>% arrange(Year, Month, Trace, HourInMonth)
 dfAllData$Hour <-  mod(dfAllData$HourInMonth-1,24)
 #Calculate the day of the month
 dfAllData$Day <- round((dfAllData$HourInMonth)/24 + 0.4999)
+#Calculate Off-peak (hours 0 to 7) and Off-peak (hours 8 to 23)
+dfAllData$Period <- ifelse(dfAllData$Hour <= 7, "Off-peak", "On-peak")
+
+### Step 7. Divide the Value column by Generation column to get a Price in $/MW-hour
+dfAllData$Price <- ifelse(dfAllData$Generation == 0, NA, dfAllData$DollarValue/dfAllData$Generation)
+
+
+
 
 cColorsToPlot <- colorRampPalette((brewer.pal(9, "Blues")))(length(nAnnualVolumes))
 
