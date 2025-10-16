@@ -15,14 +15,17 @@
 ##           The SECOND file represents the economic value of energy generated at Glen Canyon Dam in nominal dollars by hour, month and hydrologic trace in the LTEM sEIS. The purpose of these data tables are to allow for a comparison of the difference in economic value between LTEMP sEIS alternatives. Columns are hours in a month. Rows are month and 30 hydrologic traces. For example, the first 30 rows are the 30 hydrologic traces in the LTEMP sEIS (1991-2020) for the month of October 2023. Rows 31-60 are the 30 hydrologic traces in the LTEMP sEIS (1991-2020) for the month of November 2023. Rows 1471-1500 are the 30 hydrologic traces in the LTEMP sEIS (1991-2020) for the month of November 2027. The 11 data tables are separate 1500 by 744 matrices. The months with days less than 31 days contain "0" entries for those hours and days.</enttypd>
 #            Columns hour_1 to hour_744 in the data table represent economic value by hour, month and hydrologic trace in the LTEM sEIS.</attrdef>
   
-#       3. Convert the Generation table to Narrow format. So the first table has Columns of [Year][Month][Trace][Hour][Generation]
-#       4 Convert the Econ table to Narrow format. So the second table has Columns of [Year][Month][Trace][Hour][Value]
+#       3. Add row labels to differentiate each row.
+#
+#       4. Convert the Generation and Econ data frames to Narrow format.
+#             So the generation data frame has Columns of [Year][Month][Trace][Hour][Generation]
+#             So  the Econ data frame has Columns of [Year][Month][Trace][Hour][Value]
 #
 #       5. Join the two tables on Month, Trace, and Hour so we have a new data frame with columns [Year][Month][Trace][Hour][Generation][Value]
 #
 #       6. Divide the Value column by Generation column to get a Price in $/MW-hour
 #
-#       7. Present the pricing data in different formats.
+#       7. Plot the pricing data in different formats.
 #
 #     David E. Rosenberg
 #     October 15, 2025
@@ -46,7 +49,7 @@ rm(list = ls())  #Clear history
 
 
 
-### Read in the Generation and Economic Data
+### Steps #1 and #2. Read in the Generation and Economic Data
 sGenData <- 'generation/generation_hourly_noaction.csv'
 sEconData <- 'econ/econ_hourly_noaction.csv'
 
@@ -55,17 +58,27 @@ dfEconData <- read.csv(file = sEconData, header = TRUE)
 
 nLength <- nrow(dfEconData)
 
-#Add row labels. Reminder: Rows are Month and 30 hydrologic traces. 
+### Step 3. Add row labels of years and months and traces. Reminder: Rows are Month and 30 hydrologic traces. 
 #   For example, the first 30 rows are the 30 hydrologic traces in the LTEMP sEIS (1991-2020) for the month of October 2023. Rows 31-60 are the 30 hydrologic traces in the LTEMP sEIS (1991-2020) for the month of November 2023
 #   Rows 1471-1500 are the 30 hydrologic traces in the LTEMP sEIS (1991-2020) for the month of November 2027.
 
 cYears <- c(rep(2023,30*3), rep(2024,30*12),rep(2025,30*12), rep(2026,30*12),rep(2027,30*11))
 cOneYear <- c(rep(1,30),rep(2,30),rep(3,30), rep(4,30), rep(5,30), rep(6,30), rep(7,30), rep(8,30), rep(9, 30), rep(10,30), rep(11,30), rep(12,30))
-dfGenerationData$Year <- cYears
-
 cMonths <- c(rep(10,30), rep(11,30), rep(12,30), cOneYear, cOneYear, cOneYear, cOneYear[1:(11*30)])
+cTraces <- rep(seq(1,30,1), 3 + 12*3 + 11)
+
+dfGenerationData$Year <- cYears
 dfGenerationData$Month <- cMonths
-dfGenerationData$Trace <- rep(seq(1,30,1), 3 + 12*3 + 11)
+dfGenerationData$Trace <- cTraces
+
+dfEconData$Year <- cYears
+dfEconData$Month <- cMonths
+dfEconData$Trace <- cTraces
+
+### Step 4. Convert the data frames to narrow format
+#             So the generation data frame has Columns of [Year][Month][Trace][Hour][Generation]
+#             So  the Econ data frame has Columns of [Year][Month][Trace][Hour][Value]
+#
 
 
 
