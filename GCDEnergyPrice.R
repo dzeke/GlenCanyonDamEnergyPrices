@@ -110,32 +110,30 @@ dfAllData$Period <- ifelse(dfAllData$Hour <= 7, "Off-peak", "On-peak")
 ### Step 7. Divide the Value column by Generation column to get a Price in $/MW-hour
 dfAllData$Price <- ifelse(dfAllData$Generation == 0, NA, dfAllData$DollarValue/dfAllData$Generation)
 
+cColorsToPlot <- brewer.pal(9, "Blues")
+#cColorsToPlot <- colorRampPalette((brewer.pal(9, "Blues"))(10 - 3 + 1))
 
+#### Figure 1 - Box and whiskers by month 
 
+ggplot(dfAllData %>% filter(Month >= 3, Month <= 10), aes(x = as.factor(Month), y = Price)) +
 
-cColorsToPlot <- colorRampPalette((brewer.pal(9, "Blues")))(length(nAnnualVolumes))
-
-#### Figure 1 - Lines as 
-
-ggplot() +
-  #Data after 1989
-  geom_line(data = dfMonthlyReleaseLong %>% filter(`Annual Release Volume` < 20), aes(x=Month , y=`Monthly Release`/1e6, color=`Annual Release VolumeMAF`), size=1.5) +
-  theme_bw() +
+  geom_boxplot() +
+    
   
-  scale_color_manual(values = cColorsToPlot) +
+  #scale_color_manual(values = cColorsToPlot) +
   #scale_linetype_manual(values = c("solid","longdash")) +
   
-  scale_x_continuous(1, 12, breaks = seq(1,12,1), labels = month.abb[seq(1,12,1)]) +
+  #scale_x_continuous(1, 12, breaks = seq(1,12,1), labels = month.abb[seq(1,12,1)]) +
   
   #Make one combined legend
-  guides(color = guide_legend(""), linetype = guide_legend("")) +
+  #guides(color = guide_legend(""), linetype = guide_legend("")) +
   
   theme_bw() +
   
-  labs(x="Month", y="Release Volume\n(MAF per mo nth)", color="Annual Release Volume") +
+  labs(x="Month", y = "Price\n($/MW-hr)") +
   #theme(text = element_text(size=20), legend.title=element_blank(), legend.text=element_text(size=18),
   #      legend.position = c(0.8,0.7))
-  theme(text = element_text(size=20), legend.title = element_text("Annual Release\nMAF"), legend.text=element_text(size=14), axis.text.x = element_text(size=12))
+  theme(text = element_text(size=20), legend.title = element_text("Month"), legend.text=element_text(size=14), axis.text.x = element_text(size=16))
 
   
 
