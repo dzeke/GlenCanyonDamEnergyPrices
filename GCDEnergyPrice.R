@@ -120,6 +120,9 @@ dfAllData$DateTime <- ISOdate(dfAllData$Year, dfAllData$Month, dfAllData$Day, df
 #Calculate a date-time with a single year to allow overlapping months of different years
 dfAllData$DateTimeSingleYear <- ISOdate(2024, dfAllData$Month, dfAllData$Day, dfAllData$Hour, 0, 0)
 
+#Calculate the day of the week
+dfAllData$DayOfWeek <- wday(dfAllData$DateTime)
+dfAllData$DayOfWeekWord <- wday(dfAllData$DateTime, label = TRUE)
 
 cColorsToPlot <- brewer.pal(9, "Blues")
 #cColorsToPlot <- colorRampPalette((brewer.pal(9, "Blues"))(10 - 3 + 1))
@@ -170,11 +173,11 @@ ggplot(dfAllData %>% filter(Month >= 3, Month <= 10), aes(x = DateTime, y = Pric
   #      legend.position = c(0.8,0.7))
   theme(text = element_text(size=20), legend.title = element_text("Month"), legend.text=element_text(size=14), axis.text.x = element_text(size=16))
 
-
+print(wday("2024-08-01"), label = FALSE)
 
 ### Figure 3 - daily time series August
 # Insight - March, April, May, and June all have prices between $20 and $100/MW-hour.
-ggplot(dfAllData %>% filter(Month >= 3, Month <= 10), aes(x = DateTimeSingleYear, y = Price, color = as.factor(Year)) +
+ggplot(dfAllData %>% filter(Month == 8, Day <= 7), aes(x = DateTimeSingleYear, y = Price, color = as.factor(Year))) +
   
   geom_line() +
   
@@ -183,7 +186,7 @@ ggplot(dfAllData %>% filter(Month >= 3, Month <= 10), aes(x = DateTimeSingleYear
   #scale_color_manual(values = cColorsToPlot[3,5,7, 8, 9]) +
   #scale_linetype_manual(values = c("solid","longdash")) +
   
-  #scale_x_continuous(1, 12, breaks = seq(1,12,1), labels = month.abb[seq(1,12,1)]) +
+  #scale_x_continuous(1, 7*24, breaks = seq(1,7*24,24), labels = unique(dfAllData$DayOfWeekWord)) +
   
   #Make one combined legend
   #guides(color = guide_legend(""), linetype = guide_legend("")) +
