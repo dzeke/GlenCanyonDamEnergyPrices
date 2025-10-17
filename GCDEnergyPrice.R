@@ -268,11 +268,12 @@ theme_bw() +
   theme(text = element_text(size=20), legend.title = element_text("Month"), legend.text=element_text(size=14), axis.text.x = element_text(size=16))
 
 
-### Figure 6 - Look at changing prices across traces
+### Figure 6 - Look at changing prices for a single trace for a single 2 days
 # Insight - No variability
-ggplot(dfAllData %>% filter(Month == 8, Day <= 14, Year == 2024), aes(x = DateTimeSingleYear, y = Price, color = as.factor(Trace))) +
+ggplot(dfAllData %>% filter(Month == 8, Day <= 7, Year == 2024, Trace == 1), aes(x = DateTimeSingleYear, y = Price, color = as.factor(Period))) +
   
   geom_line() +
+  geom_point() +
   
   #facet_wrap(~ Month) +
   
