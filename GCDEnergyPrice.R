@@ -152,7 +152,7 @@ ggplot(dfAllData %>% filter(Month >= 3, Month <= 10), aes(x = as.factor(Month), 
 
 ### Figure 2 - daily time series all years
 # Insight - March, April, May, and June all have prices between $20 and $100/MW-hour.
-ggplot(dfAllData %>% filter(Month >= 3, Month <= 10), aes(x = DateTimeSingleYear, y = Price, color = Year)) +
+ggplot(dfAllData %>% filter(Month >= 3, Month <= 10), aes(x = DateTimeSingleYear, y = Price, color = as.factor(Year))) +
   
   geom_line() +
   
