@@ -177,7 +177,6 @@ print(wday("2024-08-01"), label = FALSE)
 
 ### Figure 3 - daily time series August
 # Insight - Year only bumps up price a small amount. Weekly pattern repeats
-# Insight - March, April, May, and June all have prices between $20 and $100/MW-hour.
 ggplot(dfAllData %>% filter(Month == 8, Day <= 14), aes(x = DateTimeSingleYear, y = Price, color = as.factor(Year))) +
   
   geom_line() +
@@ -199,10 +198,79 @@ theme_bw() +
   #      legend.position = c(0.8,0.7))
   theme(text = element_text(size=20), legend.title = element_text("Month"), legend.text=element_text(size=14), axis.text.x = element_text(size=16))
 
-### Figure 4 - daily time series August
-# Insight - Year only bumps up price a small amount. Weekly pattern repeats
-# Insight - March, April, May, and June all have prices between $20 and $100/MW-hour.
-ggplot(dfAllData %>% filter(Month == 8, Day <= 14), aes(x = DateTimeSingleYear, y = Price, color = as.factor(Year))) +
+### Figure 4 - Look at changing prices across traces
+# Insight - No variability
+ggplot(dfAllData %>% filter(Month == 8, Day <= 14, Year == 2024), aes(x = DateTimeSingleYear, y = Price, color = as.factor(Trace))) +
+  
+  geom_line() +
+  
+  #facet_wrap(~ Month) +
+  
+  #scale_color_manual(values = cColorsToPlot[3,5,7, 8, 9]) +
+  #scale_linetype_manual(values = c("solid","longdash")) +
+  
+  #scale_x_continuous(1, 7*24, breaks = seq(1,7*24,24), labels = unique(dfAllData$DayOfWeekWord)) +
+  
+  #Make one combined legend
+  #guides(color = guide_legend(""), linetype = guide_legend("")) +
+  
+theme_bw() +
+  
+  labs(x="", y = "Price\n($/MW-hr)") +
+  #theme(text = element_text(size=20), legend.title=element_blank(), legend.text=element_text(size=18),
+  #      legend.position = c(0.8,0.7))
+  theme(text = element_text(size=20), legend.title = element_text("Month"), legend.text=element_text(size=14), axis.text.x = element_text(size=16))
+
+### Figure 4 - Look at changing generation across traces
+# Insight - THere is varaibility. Same shape across traces, variability in magnitude
+ggplot(dfAllData %>% filter(Month == 8, Day <= 14, Year == 2024), aes(x = DateTimeSingleYear, y = Generation, color = as.factor(Trace))) +
+  
+  geom_line() +
+  
+  #facet_wrap(~ Month) +
+  
+  #scale_color_manual(values = cColorsToPlot[3,5,7, 8, 9]) +
+  #scale_linetype_manual(values = c("solid","longdash")) +
+  
+  #scale_x_continuous(1, 7*24, breaks = seq(1,7*24,24), labels = unique(dfAllData$DayOfWeekWord)) +
+  
+  #Make one combined legend
+  #guides(color = guide_legend(""), linetype = guide_legend("")) +
+  
+theme_bw() +
+  
+  labs(x="", y = "Generation\n(MW-hr)") +
+  #theme(text = element_text(size=20), legend.title=element_blank(), legend.text=element_text(size=18),
+  #      legend.position = c(0.8,0.7))
+  theme(text = element_text(size=20), legend.title = element_text("Month"), legend.text=element_text(size=14), axis.text.x = element_text(size=16))
+
+### Figure 5 - Look at changing economics across traces
+# Insight - THere is varaibility. Same shape across traces, variability in magnitude
+ggplot(dfAllData %>% filter(Month == 8, Day <= 14, Year == 2024), aes(x = DateTimeSingleYear, y = DollarValue, color = as.factor(Trace))) +
+  
+  geom_line() +
+  
+  #facet_wrap(~ Month) +
+  
+  #scale_color_manual(values = cColorsToPlot[3,5,7, 8, 9]) +
+  #scale_linetype_manual(values = c("solid","longdash")) +
+  
+  #scale_x_continuous(1, 7*24, breaks = seq(1,7*24,24), labels = unique(dfAllData$DayOfWeekWord)) +
+  
+  #Make one combined legend
+  #guides(color = guide_legend(""), linetype = guide_legend("")) +
+  
+theme_bw() +
+  
+  labs(x="", y = "Economic Value\n($)") +
+  #theme(text = element_text(size=20), legend.title=element_blank(), legend.text=element_text(size=18),
+  #      legend.position = c(0.8,0.7))
+  theme(text = element_text(size=20), legend.title = element_text("Month"), legend.text=element_text(size=14), axis.text.x = element_text(size=16))
+
+
+### Figure 6 - Look at changing prices across traces
+# Insight - No variability
+ggplot(dfAllData %>% filter(Month == 8, Day <= 14, Year == 2024), aes(x = DateTimeSingleYear, y = Price, color = as.factor(Trace))) +
   
   geom_line() +
   
