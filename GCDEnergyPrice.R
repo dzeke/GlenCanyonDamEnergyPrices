@@ -113,8 +113,6 @@ dfAllData <- dfAllData %>% arrange(Year, Month, Trace, HourInMonth)
 dfAllData$Hour <-  mod(dfAllData$HourInMonth-1,24)
 #Calculate the day of the month
 dfAllData$Day <- round((dfAllData$HourInMonth)/24 + 0.4999)
-#Calculate Off-peak (hours 0 to 7) and Off-peak (hours 8 to 23)
-dfAllData$Period <- ifelse(dfAllData$Hour <= 7, "Off-peak", "On-peak")
 
 ### Step 7. Divide the Value column by Generation column to get a Price in $/MW-hour
 dfAllData$Price <- ifelse(dfAllData$Generation == 0, NA, dfAllData$DollarValue/dfAllData$Generation)
@@ -324,18 +322,23 @@ theme_bw() +
   #      legend.position = c(0.8,0.7))
   theme(text = element_text(size=20), legend.title = element_text("Month"), legend.text=element_text(size=14), axis.text.x = element_text(size=16))
 
+
+
 ### Figure 8 - Overlap monthly prices on same week
-ggplot(dfAllData %>% filter(Day <= 7, Year == 2024, Trace == 1), aes(x = HourInMonth, y = Price, color = as.factor(Month))) +
+ggplot(dfAllData %>% filter(Day <= 7, Year == 2024, Trace == 1, Month >= 8, Month <= 9), aes(x = HourInMonth, y = Price)) +
   
-  geom_line() +
-  geom_point() +
+  geom_line(aes(color = as.factor(Month))) +
+  geom_point(aes(color = as.factor(Month))) +
+  
+  #Show on-peak, off peak
+  #geom_point(aes(y = 20, marker = Period), size = 2) +
   
   #facet_wrap(~ Month) +
   
   #scale_color_manual(values = cColorsToPlot[3,5,7, 8, 9]) +
   #scale_linetype_manual(values = c("solid","longdash")) +
   
-  #scale_x_continuous(1, 7*24, breaks = seq(1,7*24,24), labels = unique(dfAllData$DayOfWeekWord)) +
+   scale_x_continuous(1, 7*24, breaks = seq(1,7*24,24)) +
   
   #Make one combined legend
   #guides(color = guide_legend(""), linetype = guide_legend("")) +
