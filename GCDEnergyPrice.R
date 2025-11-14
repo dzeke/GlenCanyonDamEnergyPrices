@@ -37,7 +37,10 @@
 #       5. Time series of generation for all traces for the first two weeks of August 2023, THere is difference here, although all traces have the same shape, just different magnitudes.
 #       6. Time series of economic value for all traces for the first two weeks of August 2023, THere is difference here, although all traces have the same shape, just different magnitudes.
 #       7. Time-series showing on-peak prices highlighted in blue and off-peak prices highlighted in red for a single week in August 2024. Note, these on-, off-peak definitions are for our study and look to be different that what is used in the current data set.
-
+#       8. Time series of each month for a single year
+#       9. Time series of first week of 4 months 
+#       10.Time seriues of first week of 1 month showing off-peak and on-peak periods
+#       11. Time series of first week of 4 months showing average prices for off- and on-peak periods.
 #     David E. Rosenberg
 #     October 15, 2025
 #     david.rosenberg@usu.edu
@@ -135,6 +138,12 @@ dfAllData$MonthWord <- month(dfAllData$DateTime, label = TRUE, abbr=FALSE)
 cColorsToPlot <- brewer.pal(9, "Blues")
 #cColorsToPlot <- colorRampPalette((brewer.pal(9, "Blues"))(10 - 3 + 1))
 
+#Font sizes for different components of the plot
+nAxisTickSize <- 16
+nLegendSize <- 16
+nMainSize <- 20
+
+
 #### Figure 1 - Box and whiskers by month 
 # Insight - March, April, May, June, and October all have low and reletively stable prices.
 
@@ -156,7 +165,7 @@ ggplot(dfAllData %>% filter(Month >= 3, Month <= 10), aes(x = as.factor(Month), 
   labs(x="Month", y = "Price\n($/MW-hr)") +
   #theme(text = element_text(size=20), legend.title=element_blank(), legend.text=element_text(size=18),
   #      legend.position = c(0.8,0.7))
-  theme(text = element_text(size=20), legend.title = element_text("Month"), legend.text=element_text(size=14), axis.text.x = element_text(size=16))
+  theme(text = element_text(size=nMainSize), legend.title = element_text("Month"), legend.text=element_text(size=nLegendSize), axis.text.x = element_text(size=nAxisTickSize))
 
 
 ### Figure 2 - compare time series across years
@@ -179,7 +188,7 @@ ggplot(dfAllData %>% filter(Month >= 6, Month <= 10), aes(x = DateTimeSingleYear
   labs(x="", y = "Price\n($/MW-hr)") +
   #theme(text = element_text(size=20), legend.title=element_blank(), legend.text=element_text(size=18),
   #      legend.position = c(0.8,0.7))
-  theme(text = element_text(size=20), legend.title = element_text("Month"), legend.text=element_text(size=14), axis.text.x = element_text(size=16))
+  theme(text = element_text(size=nMainSize), legend.title = element_blank(), legend.text=element_text(size=nLegendSize), axis.text.x = element_text(size=nAxisTickSize))
 
 print(wday("2024-08-01"), label = FALSE)
 
@@ -199,12 +208,12 @@ ggplot(dfAllData %>% filter(Month == 8, Day <= 14), aes(x = DateTimeSingleYear, 
   #Make one combined legend
   #guides(color = guide_legend(""), linetype = guide_legend("")) +
   
-theme_bw() +
+  theme_bw() +
   
   labs(x="", y = "Price\n($/MW-hr)") +
   #theme(text = element_text(size=20), legend.title=element_blank(), legend.text=element_text(size=18),
   #      legend.position = c(0.8,0.7))
-  theme(text = element_text(size=20), legend.title = element_text("Month"), legend.text=element_text(size=14), axis.text.x = element_text(size=16))
+  theme(text = element_text(size=nMainSize), legend.title = element_blank(), legend.text=element_text(size=nLegendSize), axis.text.x = element_text(size=nAxisTickSize))
 
 ### Figure 4 - Look at changing prices across traces
 # Insight - No variability
@@ -224,10 +233,10 @@ ggplot(dfAllData %>% filter(Month == 8, Day <= 14, Year == 2024), aes(x = DateTi
   
 theme_bw() +
   
-  labs(x="", y = "Price\n($/MW-hr)") +
+  labs(x="", y = "Price\n($/MW-hr)", color = "Trace") +
   #theme(text = element_text(size=20), legend.title=element_blank(), legend.text=element_text(size=18),
   #      legend.position = c(0.8,0.7))
-  theme(text = element_text(size=20), legend.title = element_text("Month"), legend.text=element_text(size=14), axis.text.x = element_text(size=16))
+  theme(text = element_text(size=nMainSize), legend.title = element_text(size = nLegendSize), legend.text=element_text(size=nLegendSize), axis.text.x = element_text(size=nAxisTickSize))
 
 ### Figure 4 - Look at changing generation across traces
 # Insight - THere is varaibility. Same shape across traces, variability in magnitude
@@ -245,12 +254,12 @@ ggplot(dfAllData %>% filter(Month == 8, Day <= 14, Year == 2024), aes(x = DateTi
   #Make one combined legend
   #guides(color = guide_legend(""), linetype = guide_legend("")) +
   
-theme_bw() +
+  theme_bw() +
   
-  labs(x="", y = "Generation\n(MW-hr)") +
+  labs(x="", y = "Generation\n(MW-hr)", color = "Trace") +
   #theme(text = element_text(size=20), legend.title=element_blank(), legend.text=element_text(size=18),
   #      legend.position = c(0.8,0.7))
-  theme(text = element_text(size=20), legend.title = element_text("Month"), legend.text=element_text(size=14), axis.text.x = element_text(size=16))
+  theme(text = element_text(size=nMainSize), legend.title = element_text(size = nLegendSize), legend.text=element_text(size=nLegendSize), axis.text.x = element_text(size=nAxisTickSize))
 
 ### Figure 5 - Look at changing economics across traces
 # Insight - THere is varaibility. Same shape across traces, variability in magnitude
@@ -270,10 +279,10 @@ ggplot(dfAllData %>% filter(Month == 8, Day <= 14, Year == 2024), aes(x = DateTi
   
 theme_bw() +
   
-  labs(x="", y = "Economic Value\n($)") +
+  labs(x="", y = "Economic Value\n($)", color = "Trace") +
   #theme(text = element_text(size=20), legend.title=element_blank(), legend.text=element_text(size=18),
   #      legend.position = c(0.8,0.7))
-  theme(text = element_text(size=20), legend.title = element_text("Month"), legend.text=element_text(size=14), axis.text.x = element_text(size=16))
+  theme(text = element_text(size=nMainSize), legend.title = element_text(size = nLegendSize), legend.text=element_text(size=nLegendSize), axis.text.x = element_text(size=nAxisTickSize))
 
 
 ### Figure 6 - Look at changing prices for a single trace for a single 2 days
@@ -281,7 +290,7 @@ theme_bw() +
 ggplot(dfAllData %>% filter(Month == 8, Day <= 7, Year == 2024, Trace == 1), aes(x = DateTimeSingleYear, y = Price, color = as.factor(Period))) +
   
   geom_line() +
-  geom_point() +
+  geom_point(size = 3, aes(shape = as.factor(Period))) +
   
   #facet_wrap(~ Month) +
   
@@ -293,12 +302,12 @@ ggplot(dfAllData %>% filter(Month == 8, Day <= 7, Year == 2024, Trace == 1), aes
   #Make one combined legend
   #guides(color = guide_legend(""), linetype = guide_legend("")) +
   
-theme_bw() +
+  theme_bw() +
   
   labs(x="", y = "Price\n($/MW-hr)") +
   #theme(text = element_text(size=20), legend.title=element_blank(), legend.text=element_text(size=18),
   #      legend.position = c(0.8,0.7))
-  theme(text = element_text(size=20), legend.title = element_text("Month"), legend.text=element_text(size=14), axis.text.x = element_text(size=16))
+  theme(text = element_text(size=nMainSize), legend.title = element_blank(), legend.text=element_text(size=nLegendSize), axis.text.x = element_text(size=nAxisTickSize))
 
 ### Figure 7 - Compare weekly prices by month for the first week of the month
 ggplot(dfAllData %>% filter(Day <= 7, Year == 2024, Trace == 1), aes(x = DateTimeSingleYear, y = Price, color = as.factor(Month))) +
@@ -321,7 +330,7 @@ theme_bw() +
   labs(x="", y = "Price\n($/MW-hr)") +
   #theme(text = element_text(size=20), legend.title=element_blank(), legend.text=element_text(size=18),
   #      legend.position = c(0.8,0.7))
-  theme(text = element_text(size=20), legend.title = element_text("Month"), legend.text=element_text(size=14), axis.text.x = element_text(size=16))
+  theme(text = element_text(size=nMainSize), legend.title = element_blank(), legend.text=element_text(size=nLegendSize), axis.text.x = element_text(size=nAxisTickSize))
 
 
 
@@ -350,12 +359,12 @@ theme_bw() +
   labs(x="Hour of first week", y = "Price\n($/MW-hr)") +
   #theme(text = element_text(size=20), legend.title=element_blank(), legend.text=element_text(size=18),
   #      legend.position = c(0.8,0.7))
-  theme(text = element_text(size=20), legend.title = element_blank(), legend.text=element_text(size=16), axis.text.x = element_text(size=16))
+  theme(text = element_text(size=nMainSize), legend.title = element_blank(), legend.text=element_text(size=nLegendSize), axis.text.x = element_text(size=nAxisTickSize))
 
 
 #Calculate Off-peak (hours 4 to 11) and On-peak all other hours
 nStartHourOffPeak <- 6
-nEndHourOffPeak <- nStartHourOffPeak +8
+nEndHourOffPeak <- nStartHourOffPeak + 8
 dfAllData$Period <- ifelse((dfAllData$Hour >= nStartHourOffPeak) & (dfAllData$Hour <= nEndHourOffPeak), "Off-peak", "On-peak")
 
 ### Figure 9 - Show On-peak, off peak for first week of a single month
@@ -382,7 +391,7 @@ ggplot(dfAllData %>% filter(Day <= 7, Year == 2024, Trace == 1, Month == 7), aes
   labs(x="Hour of first week", y = "Price\n($/MW-hr)") +
   #theme(text = element_text(size=20), legend.title=element_blank(), legend.text=element_text(size=18),
   #      legend.position = c(0.8,0.7))
-  theme(text = element_text(size=20), legend.title = element_blank(), legend.text=element_text(size=18), axis.text.x = element_text(size=16))
+  theme(text = element_text(size=nMainSize), legend.title = element_blank(), legend.text=element_text(size=nLegendSize), axis.text.x = element_text(size=nAxisTickSize))
 
 
 ### Calculate an average price for each period
@@ -417,5 +426,5 @@ ggplot(dfAllDataAvgPrice %>% filter(Day <= 7, Year == 2024, Trace == 1, Month >=
   labs(x="Day of the Week", y = "Average Period Price\n($/MW-hr)") +
   #theme(text = element_text(size=20), legend.title=element_blank(), legend.text=element_text(size=18),
   #      legend.position = c(0.8,0.7))
-  theme(text = element_text(size=20), legend.title = element_blank(), legend.text=element_text(size=18), axis.text.x = element_text(size=18))
+  theme(text = element_text(size=nMainSize), legend.title = element_blank(), legend.text=element_text(size=nLegendSize), axis.text.x = element_text(size=nAxisTickSize))
 
