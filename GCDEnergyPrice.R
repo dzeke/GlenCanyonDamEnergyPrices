@@ -354,10 +354,40 @@ theme_bw() +
 #Calculate Off-peak (hours 4 to 11) and On-peak all other hours
 dfAllData$Period <- ifelse((dfAllData$Hour >= 4) & (dfAllData$Hour <= 11), "Off-peak", "On-peak")
 
-### Figure 9 - Showing On-peak, off peak
-ggplot(dfAllData %>% filter(Day <= 7, Year == 2024, Trace == 1, Month == 8), aes(x = HourInMonth, y = Price)) +
+### Figure 9 - Show On-peak, off peak for first week of a single month
+ggplot(dfAllData %>% filter(Day <= 7, Year == 2024, Trace == 1, Month == 7), aes(x = HourInMonth, y = Price)) +
   
-  #geom_line() +
+  #geom_line(aes(color = as.factor(Period)), size = 2) +
+  geom_point(aes(color = as.factor(Period), shape = as.factor(Period)), size = 2) +
+  
+  #Show on-peak, off peak
+  #geom_point(aes(y = 20, marker = Period), size = 2) +
+  
+  #facet_wrap(~ Month) +
+  
+  #scale_color_manual(values = cColorsToPlot[3,5,7, 8, 9]) +
+  #scale_linetype_manual(values = c("solid","longdash")) +
+  
+  scale_x_continuous(1, 7*24, breaks = seq(1,7*24,24)) +
+  
+  #Make one combined legend
+  #guides(color = guide_legend(""), linetype = guide_legend("")) +
+  
+  theme_bw() +
+  
+  labs(x="Hour of first week", y = "Price\n($/MW-hr)") +
+  #theme(text = element_text(size=20), legend.title=element_blank(), legend.text=element_text(size=18),
+  #      legend.position = c(0.8,0.7))
+  theme(text = element_text(size=20), legend.title = element_text("Month"), legend.text=element_text(size=14), axis.text.x = element_text(size=16))
+
+### STILL WORKING HERE
+### Calculate an average price for each period
+dfAllDataAvgPrice <- dfAllData %>% dplyr::group_by(Day, Year, Trace, Month, Period) %>% dplyr::summarise(AvgPrice = mean(Price))
+
+### Figure 10 - Average On-peak and off peak price for first week of a single month
+ggplot(dfAllDataAvgPrice %>% filter(Day <= 7, Year == 2024, Trace == 1, Month == 8), aes(x = Period, y = AvgPrice)) +
+  
+  #geom_line(aes(color = as.factor(Period)), size = 2) +
   geom_point(aes(color = as.factor(Period), shape = as.factor(Period)), size = 2) +
   
   #Show on-peak, off peak
