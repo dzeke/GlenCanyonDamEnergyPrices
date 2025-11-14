@@ -130,6 +130,7 @@ dfAllData$DateTimeSingleYear <- ISOdate(2024, dfAllData$Month, dfAllData$Day, df
 #Calculate the day of the week
 dfAllData$DayOfWeek <- wday(dfAllData$DateTime)
 dfAllData$DayOfWeekWord <- wday(dfAllData$DateTime, label = TRUE)
+dfAllData$MonthWord <- month(dfAllData$DateTime, label = TRUE, abbr=FALSE)
 
 cColorsToPlot <- brewer.pal(9, "Blues")
 #cColorsToPlot <- colorRampPalette((brewer.pal(9, "Blues"))(10 - 3 + 1))
@@ -325,20 +326,21 @@ theme_bw() +
 
 
 ### Figure 8 - Overlap monthly prices on same week
-ggplot(dfAllData %>% filter(Day <= 7, Year == 2024, Trace == 1, Month >= 8, Month <= 9), aes(x = HourInMonth, y = Price)) +
+ggplot(dfAllData %>% filter(Day <= 7, Year == 2024, Trace == 1, Month >= 6, Month <= 9), aes(x = HourInMonth, y = Price, color = as.factor(MonthWord), shape = as.factor(MonthWord))) +
   
-  geom_line(aes(color = as.factor(Month))) +
-  geom_point(aes(color = as.factor(Month))) +
+  geom_line() +
+  geom_point() +
   
   #Show on-peak, off peak
   #geom_point(aes(y = 20, marker = Period), size = 2) +
   
   #facet_wrap(~ Month) +
   
-  #scale_color_manual(values = cColorsToPlot[3,5,7, 8, 9]) +
+  scale_color_manual(values = cColorsToPlot[c(3,5,7,9)]) +
+  #scale_shape_manual(values = )
   #scale_linetype_manual(values = c("solid","longdash")) +
   
-   scale_x_continuous(1, 7*24, breaks = seq(1,7*24,24)) +
+   scale_x_continuous(breaks = seq(1,7*24,24)) +
   
   #Make one combined legend
   #guides(color = guide_legend(""), linetype = guide_legend("")) +
@@ -348,17 +350,19 @@ theme_bw() +
   labs(x="Hour of first week", y = "Price\n($/MW-hr)") +
   #theme(text = element_text(size=20), legend.title=element_blank(), legend.text=element_text(size=18),
   #      legend.position = c(0.8,0.7))
-  theme(text = element_text(size=20), legend.title = element_text("Month"), legend.text=element_text(size=14), axis.text.x = element_text(size=16))
+  theme(text = element_text(size=20), legend.title = element_blank(), legend.text=element_text(size=16), axis.text.x = element_text(size=16))
 
 
 #Calculate Off-peak (hours 4 to 11) and On-peak all other hours
-dfAllData$Period <- ifelse((dfAllData$Hour >= 4) & (dfAllData$Hour <= 11), "Off-peak", "On-peak")
+nStartHourOffPeak <- 6
+nEndHourOffPeak <- nStartHourOffPeak + 8
+dfAllData$Period <- ifelse((dfAllData$Hour >= nStartHourOffPeak) & (dfAllData$Hour <= nEndHourOffPeak), "Off-peak", "On-peak")
 
 ### Figure 9 - Show On-peak, off peak for first week of a single month
 ggplot(dfAllData %>% filter(Day <= 7, Year == 2024, Trace == 1, Month == 7), aes(x = HourInMonth, y = Price)) +
   
-  #geom_line(aes(color = as.factor(Period)), size = 2) +
-  geom_point(aes(color = as.factor(Period), shape = as.factor(Period)), size = 2) +
+  geom_line() +
+  geom_point(aes(color = as.factor(Period), shape = as.factor(Period)), size = 5) +
   
   #Show on-peak, off peak
   #geom_point(aes(y = 20, marker = Period), size = 2) +
@@ -368,7 +372,7 @@ ggplot(dfAllData %>% filter(Day <= 7, Year == 2024, Trace == 1, Month == 7), aes
   #scale_color_manual(values = cColorsToPlot[3,5,7, 8, 9]) +
   #scale_linetype_manual(values = c("solid","longdash")) +
   
-  scale_x_continuous(1, 7*24, breaks = seq(1,7*24,24)) +
+  scale_x_continuous(breaks = seq(1,7*24,24)) +
   
   #Make one combined legend
   #guides(color = guide_legend(""), linetype = guide_legend("")) +
@@ -378,19 +382,21 @@ ggplot(dfAllData %>% filter(Day <= 7, Year == 2024, Trace == 1, Month == 7), aes
   labs(x="Hour of first week", y = "Price\n($/MW-hr)") +
   #theme(text = element_text(size=20), legend.title=element_blank(), legend.text=element_text(size=18),
   #      legend.position = c(0.8,0.7))
-  theme(text = element_text(size=20), legend.title = element_text("Month"), legend.text=element_text(size=14), axis.text.x = element_text(size=16))
+  theme(text = element_text(size=20), legend.title = element_blank(), legend.text=element_text(size=18), axis.text.x = element_text(size=16))
 
-### STILL WORKING HERE
+
 ### Calculate an average price for each period
-dfAllDataAvgPrice <- dfAllData %>% dplyr::group_by(Day, Year, Trace, Month, Period) %>% dplyr::summarise(AvgPrice = mean(Price))
-## Add a field so we can plot 2 data points per day
-dfAllDataAvgPrice$PeriodAsPartOfDay <- dfAllDataAvgPrice$Day + ifelse(dfAllDataAvgPrice$Day == "On-peak", 11/24, 4/24)
+dfAllDataAvgPrice <- dfAllData %>% dplyr::group_by(Day, Year, Trace, Month, MonthWord, Period) %>% dplyr::summarise(AvgPrice = mean(Price))
+## Add a field so we can plot 2 periods per day
+dfAllDataAvgPrice$PeriodAsPartOfDay <- dfAllDataAvgPrice$Day + ifelse(dfAllDataAvgPrice$Day == "On-peak", nEndHourOffPeak/24, nStartHourOffPeak/24)
 
+nStartMonth <- 6
+nEndMonth <- 9
 
 ### Figure 10 - Average On-peak and off peak price for first week of a single month
-ggplot(dfAllDataAvgPrice %>% filter(Day <= 7, Year == 2024, Trace == 1, Month >= 7, Month <= 8), aes(x = PeriodAsPartOfDay, y = AvgPrice, color = as.factor(Month))) +
+ggplot(dfAllDataAvgPrice %>% filter(Day <= 7, Year == 2024, Trace == 1, Month >= nStartMonth, Month <= nEndMonth), aes(x = PeriodAsPartOfDay, y = AvgPrice, color = as.factor(MonthWord))) +
   
-  geom_step(direction = "mid") +
+  geom_step(direction = "mid", size = 2) +
   #geom_point(aes(color = as.factor(Period), shape = as.factor(Period)), size = 2) +
   
   #Show on-peak, off peak
@@ -398,7 +404,7 @@ ggplot(dfAllDataAvgPrice %>% filter(Day <= 7, Year == 2024, Trace == 1, Month >=
   
   #facet_wrap(~ Month) +
   
-  #scale_color_manual(values = cColorsToPlot[3,5,7, 8, 9]) +
+  scale_color_manual(values = cColorsToPlot[seq(3,9,2)]) +
   #scale_linetype_manual(values = c("solid","longdash")) +
   
   scale_x_continuous(breaks = seq(1,7,1)) +
@@ -411,5 +417,5 @@ ggplot(dfAllDataAvgPrice %>% filter(Day <= 7, Year == 2024, Trace == 1, Month >=
   labs(x="Day of the Week", y = "Average Period Price\n($/MW-hr)") +
   #theme(text = element_text(size=20), legend.title=element_blank(), legend.text=element_text(size=18),
   #      legend.position = c(0.8,0.7))
-  theme(text = element_text(size=20), legend.title = element_text("Month"), legend.text=element_text(size=14), axis.text.x = element_text(size=16))
+  theme(text = element_text(size=20), legend.title = element_blank(), legend.text=element_text(size=18), axis.text.x = element_text(size=18))
 
