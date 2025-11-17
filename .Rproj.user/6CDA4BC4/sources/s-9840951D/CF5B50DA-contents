@@ -30,23 +30,23 @@
 #       8. Plot the pricing data in different formats.
 #
 #     Plots:
-#       1. Box and Whiskers of variation in prices for each month. This includes all scenarios and all weeks/days/hours.
-#       2. Time series of prices for all years all months, years overlaid on each other.
-#       3. Time series of prices for all years for the first two weeks of August
-#       4. Time series of prices for all traces for the first two weeks of August, 2023. There is no difference.
-#       5. Time series of generation for all traces for the first two weeks of August 2023, THere is difference here, although all traces have the same shape, just different magnitudes.
-#       6. Time series of economic value for all traces for the first two weeks of August 2023, THere is difference here, although all traces have the same shape, just different magnitudes.
-#       7. Time-series showing on-peak prices highlighted in blue and off-peak prices highlighted in red for a single week in August 2024. Note, these on-, off-peak definitions are for our study and look to be different that what is used in the current data set.
-#       8. Time series of each month for a single year
-#       9. Time series of first week of 4 months 
-#       10.Time seriues of first week of 1 month showing off-peak and on-peak periods
-#       11. Time series of first week of 4 months showing average prices for off- and on-peak periods.
-#     David E. Rosenberg
-#     October 15, 2025
-#     david.rosenberg@usu.edu
 
-#
-#####
+# Figure 1. Box and Whiskers of variation in prices for each month. This includes all scenarios and all weeks/days/hours/years.
+# Figure 2. Time series of prices for all years all months, years overlaid on each other.
+# Figure 3. Time series of prices for all traces for the first two weeks of August, 2023.
+# Figure 4. Time series of generation for all traces for the first two weeks of August 2023.
+# Figure 5. Time series of economic value for all traces for the first two weeks of August 2023, There is difference here, although all traces have the same shape, just different magnitudes.
+# Figure 6. Time series for 1st week of August 2024 separating on-peak prices from off-peak prices.
+# Figure 7. Time-series showing on-peak prices highlighted in blue and off-peak prices highlighted in red for a single week in August 2024. Note, these on-, off-peak definitions are for our study and look to be different that what is used in the current data set.
+# Figure 8. Time-series of prices showing the first week of June, July, August, and September for Year 2024, Trace 1.
+# Figure 9. Time series of first week of July 2024 showing on-peak and off-peak prices
+# Figure 10. Period average on-peak and off-peak prices for first week of June, July, August and September. #     David E. Rosenberg
+#     
+# David Rosenberg
+# November 17, 2025
+# david.rosenberg@usu.edu
+
+#################
 
 
 rm(list = ls())  #Clear history

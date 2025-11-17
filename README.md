@@ -4,6 +4,8 @@ This repository has the purpose to answer the question: How do energy prices at 
 
 We use data from Bair, L., and Yackulic, C. (2024). "Predicted hydropower impacts of different management scenarios for Lake Powell releases." U.S. Geological Survey data release. https://doi.org/10.5066/P135BOD8.
 
+## More about the dataset
+
 This dataset includes release, energy generation (MW-hour), and economic value of releases (nominal $ per hour) by hour of the day for Months from October 2023 to November 2027.
 Thus the data include peak hour of the day and peak hour of the week release, energy generation, and economic value.
 
@@ -24,7 +26,7 @@ Our analysis focuses on the No Action Alternative (econ_hourly_noaction.csv, flo
 in energy prices which are the same across all the alternatives. Additionally, we are interested in the econ and economic value data as we
 use these two values to compute the energy price ($ per MW-hour).
 
-The general data wrangling strategy is:
+## Data wrangling strategy
 
 1. Read in the generation data for the No action alternative in the folder generation/generation_hourly_noaction.csv [MW-hour].
 This  FIRST file represents hourly generation at Glen Canyon Dam in megawatt hours by hour, month and hydrologic trace in the LTEM sEIS. The purpose of these data tables are to allow for a comparison of the difference in generation between LTEMP eEIS alternatives. Columns are hours in a month. Rows are month and 30 hydrologic traces. For example, the first 30 rows are the 30 hydrologic traces in the LTEMP sEIS (1991-2020) for the month of October 2023. Rows 31-60 are the 30 hydrologic traces in the LTEMP sEIS (1991-2020) for the month of November 2023. Rows 1471-1500 are the 30 hydrologic traces in the LTEMP sEIS (1991-2020) for the month of November 2027. The 11 data tables are separate 1500 by 744 matrices. The months with days less than 31 days contain "0" entries for those hours and days.</enttypd>
@@ -47,7 +49,7 @@ So  the Econ data frame has Columns of [Year][Month][Trace][HourAsText][Value]
 
 1. Plot the pricing data in different formats.
 
-## Plots:
+## Plots
 1. Box and Whiskers of variation in prices for each month. This includes all scenarios and all weeks/days/hours/years.
 1. Time series of prices for all years all months, years overlaid on each other.
 1. Time series of prices for all traces for the first two weeks of August, 2023.
@@ -79,7 +81,7 @@ David E. Rosenberg (2025), “How do energy prices at Glen Canyon Dam change by 
 https://github.com/dzeke/GlenCanyonDamEnergyPrices.
 
 ## View Results
-Open the file **[PowellMonthlyRelease.pdf](PowellMonthlyRelease.pdf)**
+Open the file **[GCDEnergyPrice.pdf](GCDEnergyPrice.pdf)**
 
 ## Requirements to Run
 * R version 4.1.1. Download from https://cran.r-project.org/.
