@@ -52,12 +52,12 @@ So  the Econ data frame has Columns of [Year][Month][Trace][HourAsText][Value]
 ## Plots
 1. Box and Whiskers of variation in prices for each month. This includes all scenarios and all weeks/days/hours/years.
 1. Time series of prices for all years all months, years overlaid on each other.
-1. Time series of prices for all traces for the first two weeks of August, 2023.
-1. Time series of generation for all traces for the first two weeks of August 2023.
-1. Time series of economic value for all traces for the first two weeks of August 2023, There is difference here, although all traces have the same shape, just different magnitudes.
-1. Time series for 1st week of August 2024 separating on-peak prices from off-peak prices.
+1. Time series of prices for all traces for the first two weeks of August, all years overlaid on each other.
+1. Time series of generation for all traces for the first two weeks of August 2024.
+1. Time series of economic value for all traces for the first two weeks of August 2024, There is difference here, although all traces have the same shape, just different magnitudes.
 1. Time-series showing on-peak prices highlighted in blue and off-peak prices highlighted in red for a single week in August 2024. Note, these on-, off-peak definitions are for our study and look to be different that what is used in the current data set.
 1. Time-series of prices showing the first week of June, July, August, and September for Year 2024, Trace 1.
+1. Time-series of monthly prices on the same week.
 1. Time series of first week of July 2024 showing on-peak and off-peak prices
 1. Period average on-peak and off-peak prices for first week of June, July, August and September. 
 

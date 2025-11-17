@@ -135,6 +135,11 @@ dfAllData$DayOfWeek <- wday(dfAllData$DateTime)
 dfAllData$DayOfWeekWord <- wday(dfAllData$DateTime, label = TRUE)
 dfAllData$MonthWord <- month(dfAllData$DateTime, label = TRUE, abbr=FALSE)
 
+#Calculate Off-peak (hours 4 to 11) and On-peak all other hours
+nStartHourOffPeak <- 6
+nEndHourOffPeak <- nStartHourOffPeak + 8
+dfAllData$Period <- ifelse((dfAllData$Hour >= nStartHourOffPeak) & (dfAllData$Hour <= nEndHourOffPeak), "Off-peak", "On-peak")
+
 cColorsToPlot <- brewer.pal(9, "Blues")
 #cColorsToPlot <- colorRampPalette((brewer.pal(9, "Blues"))(10 - 3 + 1))
 
@@ -142,6 +147,8 @@ cColorsToPlot <- brewer.pal(9, "Blues")
 nAxisTickSize <- 16
 nLegendSize <- 16
 nMainSize <- 20
+
+
 
 
 #### Figure 1 - Box and whiskers by month 
@@ -285,7 +292,7 @@ theme_bw() +
   theme(text = element_text(size=nMainSize), legend.title = element_text(size = nLegendSize), legend.text=element_text(size=nLegendSize), axis.text.x = element_text(size=nAxisTickSize))
 
 
-### Figure 6 - Look at changing prices on- and off-peak for a singl week of August 2024
+### Figure 6 - Look at changing prices on- and off-peak for a single week of August 2024
 # Insight - No variability
 ggplot(dfAllData %>% filter(Month == 8, Day <= 7, Year == 2024, Trace == 1), aes(x = DateTimeSingleYear, y = Price, color = as.factor(Period))) +
   
@@ -362,10 +369,6 @@ theme_bw() +
   theme(text = element_text(size=nMainSize), legend.title = element_blank(), legend.text=element_text(size=nLegendSize), axis.text.x = element_text(size=nAxisTickSize))
 
 
-#Calculate Off-peak (hours 4 to 11) and On-peak all other hours
-nStartHourOffPeak <- 6
-nEndHourOffPeak <- nStartHourOffPeak + 8
-dfAllData$Period <- ifelse((dfAllData$Hour >= nStartHourOffPeak) & (dfAllData$Hour <= nEndHourOffPeak), "Off-peak", "On-peak")
 
 ### Figure 9 - Show On-peak, off peak for first week of a single month
 ggplot(dfAllData %>% filter(Day <= 7, Year == 2024, Trace == 1, Month == 7), aes(x = HourInMonth, y = Price)) +
