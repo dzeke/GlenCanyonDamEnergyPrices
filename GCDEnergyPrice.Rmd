@@ -540,3 +540,45 @@ ggplot(dfAllDataAvgPrice %>% filter(Day <= 7, Year == 2024, Trace == 1, Month %i
   #      legend.position = c(0.8,0.7))
   theme(text = element_text(size=nMainSize), legend.title = element_blank(), legend.text=element_text(size=nLegendSize), axis.text.x = element_text(size=nAxisTickSize))
 ```
+
+# Figure 12. Average weekly on- and off-peak prices
+
+```{r GCDpricesFig12, echo=FALSE, warning=FALSE, message=FALSE}
+### Calculate an average price for all weekday on- and off-peak prices (day >=2 and day <= 6)
+dfAllDataAvgWeekPrice <- dfAllData %>% dplyr::group_by(Year, Trace, Month, MonthWord, Period, DayType) %>% dplyr::summarise(AvgPrice = mean(Price))
+
+## Add a field so we can plot 2 periods per day
+dfAllDataAvgWeekPrice$PeriodAsPartOfDay <- ifelse(dfAllDataAvgWeekPrice$Period == "Off-peak", nStartHourOffPeak/24, nEndHourOffPeak/24)
+
+## Add a field 
+dfAllDataAvgWeekPrice$PeriodAsPartOfWeek <- ifelse(dfAllDataAvgWeekPrice$DayType == "Weekend",1,2) + dfAllDataAvgWeekPrice$PeriodAsPartOfDay
+
+## Figure 12 - Average On-peak and off peak price for first week selected months
+ggplot(dfAllDataAvgWeekPrice %>% filter(Year == 2024, Trace == 1, Month %in% c(6,7,8,9)), aes(x = PeriodAsPartOfWeek, y = AvgPrice, color = as.factor(MonthWord))) +
+ 
+  geom_step(direction = "hv", size = 2) +
+  #geom_point(aes(shape = as.factor(MonthWord)), size = 5) +
+  
+  #Show on-peak, off peak
+  #geom_point(aes(y = 20, marker = Period), size = 2) +
+  
+  #facet_wrap(~ Month) +
+  
+  scale_color_manual(values = cColorsToPlot[seq(3,9,2)]) +
+  #scale_linetype_manual(values = c("solid","longdash")) +
+  
+  #scale_x_continuous(limits = c(1.25,3.25), breaks = c(1.25,1.58,2.25,2.58), labels = c("Weekday\nOff-peak", "Weekday\nOn-peak", "Weekend\nOff-peak", "Weekend\nOn-peak")) +
+  scale_x_continuous(limits = c(1.25,2.9), breaks = c(mean(c(1.25,1.58)), mean(c(1.58,2.25)), mean(c(2.25,2.58)), mean(c(2.58,2.95))), labels = c("Weekday\nOff-peak", "Weekday\nOn-peak", "Weekend\nOff-peak", "Weekend\nOn-peak")) +
+  
+    
+  #Make one combined legend
+  #guides(color = guide_legend(""), linetype = guide_legend("")) +
+  
+  theme_bw() +
+  
+  labs(x="", y = "Average Period Price\n($/MW-hr)") +
+  #theme(text = element_text(size=20), legend.title=element_blank(), legend.text=element_text(size=18),
+  #      legend.position = c(0.8,0.7))
+  theme(text = element_text(size=nMainSize-2), legend.title = element_blank(), legend.text=element_text(size=nLegendSize), axis.text.x = element_text(size=nAxisTickSize-4))
+
+```
