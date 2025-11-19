@@ -400,15 +400,43 @@ ggplot(dfAllData %>% filter(Day <= 7, Year == 2024, Trace == 1, Month == 7), aes
 ### Calculate an average price for each period
 dfAllDataAvgPrice <- dfAllData %>% dplyr::group_by(Day, Year, Trace, Month, MonthWord, Period) %>% dplyr::summarise(AvgPrice = mean(Price))
 ## Add a field so we can plot 2 periods per day
-dfAllDataAvgPrice$PeriodAsPartOfDay <- dfAllDataAvgPrice$Day + ifelse(dfAllDataAvgPrice$Day == "On-peak", nEndHourOffPeak/24, nStartHourOffPeak/24)
+dfAllDataAvgPrice$PeriodAsPartOfDay <- dfAllDataAvgPrice$Day + ifelse(dfAllDataAvgPrice$Period == "On-peak", nEndHourOffPeak/24, nStartHourOffPeak/24)
 
 nStartMonth <- 6
 nEndMonth <- 9
 
-### Figure 10 - Average On-peak and off peak price for first week of a single month
+### Figure 10 - Average On-peak and off peak price for first week of selected months
 ggplot(dfAllDataAvgPrice %>% filter(Day <= 7, Year == 2024, Trace == 1, Month >= nStartMonth, Month <= nEndMonth), aes(x = PeriodAsPartOfDay, y = AvgPrice, color = as.factor(MonthWord))) +
   
-  geom_step(direction = "mid", size = 2) +
+  geom_step(direction = "hv", size = 2) +
+  #geom_point(aes(color = as.factor(Period), shape = as.factor(Period)), size = 2) +
+  
+  #Show on-peak, off peak
+  #geom_point(aes(y = 20, marker = Period), size = 2) +
+  
+  #facet_wrap(~ Month) +
+  
+  scale_color_manual(values = cColorsToPlot[seq(3,9,2)]) +
+  #scale_linetype_manual(values = c("solid","longdash")) +
+  
+  scale_x_continuous(breaks = seq(1,7,1)) +
+  
+  #Make one combined legend
+  #guides(color = guide_legend(""), linetype = guide_legend("")) +
+  
+  theme_bw() +
+  
+  labs(x="Day of the Week", y = "Average Period Price\n($/MW-hr)") +
+  #theme(text = element_text(size=20), legend.title=element_blank(), legend.text=element_text(size=18),
+  #      legend.position = c(0.8,0.7))
+  theme(text = element_text(size=nMainSize), legend.title = element_blank(), legend.text=element_text(size=nLegendSize), axis.text.x = element_text(size=nAxisTickSize))
+
+
+
+## Figure 11 - Average On-peak and off peak price for first week selected months
+ggplot(dfAllDataAvgPrice %>% filter(Day <= 7, Year == 2024, Trace == 1, Month %in% c(3,4,5,10)), aes(x = PeriodAsPartOfDay, y = AvgPrice, color = as.factor(MonthWord))) +
+  
+  geom_step(direction = "hv", size = 2) +
   #geom_point(aes(color = as.factor(Period), shape = as.factor(Period)), size = 2) +
   
   #Show on-peak, off peak
