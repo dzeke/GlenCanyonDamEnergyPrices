@@ -140,6 +140,9 @@ nStartHourOffPeak <- 6
 nEndHourOffPeak <- nStartHourOffPeak + 8
 dfAllData$Period <- ifelse((dfAllData$Hour >= nStartHourOffPeak) & (dfAllData$Hour <= nEndHourOffPeak), "Off-peak", "On-peak")
 
+#Calculate Weekday (Days 2 to 6) verses weekend (Days 1 and 7)
+dfAllData$DayType <- ifelse((dfAllData$DayOfWeek >= 2) & (dfAllData$DayOfWeek <= 6), "Weekday", "Weekend")
+
 cColorsToPlot <- brewer.pal(9, "Blues")
 #cColorsToPlot <- colorRampPalette((brewer.pal(9, "Blues"))(10 - 3 + 1))
 
@@ -397,7 +400,7 @@ ggplot(dfAllData %>% filter(Day <= 7, Year == 2024, Trace == 1, Month == 7), aes
   theme(text = element_text(size=nMainSize), legend.title = element_blank(), legend.text=element_text(size=nLegendSize), axis.text.x = element_text(size=nAxisTickSize))
 
 
-### Calculate an average price for each period
+### Calculate an average price for each day and period
 dfAllDataAvgPrice <- dfAllData %>% dplyr::group_by(Day, Year, Trace, Month, MonthWord, Period) %>% dplyr::summarise(AvgPrice = mean(Price))
 ## Add a field so we can plot 2 periods per day
 dfAllDataAvgPrice$PeriodAsPartOfDay <- dfAllDataAvgPrice$Day + ifelse(dfAllDataAvgPrice$Period == "On-peak", nEndHourOffPeak/24, nStartHourOffPeak/24)
@@ -458,4 +461,11 @@ ggplot(dfAllDataAvgPrice %>% filter(Day <= 7, Year == 2024, Trace == 1, Month %i
   #theme(text = element_text(size=20), legend.title=element_blank(), legend.text=element_text(size=18),
   #      legend.position = c(0.8,0.7))
   theme(text = element_text(size=nMainSize), legend.title = element_blank(), legend.text=element_text(size=nLegendSize), axis.text.x = element_text(size=nAxisTickSize))
+
+#### Figure 12 Average weekly on- and off-peak prices
+### Calculate an average price for all weekday on- and off-peak prices (day >=2 and day <= 6)
+dfAllDataAvgWeekPrice <- dfAllData %>% dplyr::group_by(Year, Trace, Month, MonthWord, Period, DayType) %>% dplyr::summarise(AvgPrice = mean(Price))
+
+## Add a field so we can plot 2 periods per day
+dfAllDataAvgWeekPrice$PeriodAsPartOfDay <- dfAllDataAvgPrice$Day + ifelse(dfAllDataAvgPrice$Period == "On-peak", nEndHourOffPeak/24, nStartHourOffPeak/24)
 
