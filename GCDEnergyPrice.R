@@ -53,7 +53,7 @@ rm(list = ls())  #Clear history
 
 #Load packages in one go
   #List of packages
-  load.lib <- c("tidyverse", "readxl", "RColorBrewer", "dplyr", "expss", "reshape2", "pracma", "lubridate", "directlabels", "plyr", "stringr", "ggplot2")
+  load.lib <- c("tidyverse", "readxl", "RColorBrewer", "dplyr", "expss", "reshape2", "pracma", "lubridate", "directlabels", "plyr", "stringr", "ggplot2", "knitr", "tidyr")
 # Then we select only the packages that aren't currently installed.
   install.lib <- load.lib[!load.lib %in% installed.packages()]
 # And finally we install the missing packages, including their dependency.
@@ -502,3 +502,18 @@ ggplot(dfAllDataAvgWeekPrice %>% filter(Year == 2024, Trace == 1, Month %in% c(6
   #      legend.position = c(0.8,0.7))
   theme(text = element_text(size=nMainSize), legend.title = element_blank(), legend.text=element_text(size=nLegendSize), axis.text.x = element_text(size=nAxisTickSize))
 
+
+## Push the Weekend / Weekday on- and off-peak prices to a table
+dfWeekShortNarrow <- dfAllDataAvgWeekPrice %>% filter(Year == 2024, Trace == 1, Month %in% seq(3,10)) %>% select(Year, Month, MonthWord, Period, DayType, AvgPrice)
+## Reshape to Wide so we are looking at On-peak and Off-peak prices
+
+## Remove "-" In Period field
+
+dfWeekShortNarrow$Period <- ifelse(dfWeekShortNarrow$Period == "On-peak", "OnPeak", "OffPeak")
+dfWeekShortWide <- dfWeekShortNarrow %>% pivot_wider(names_from = c(DayType, Period), values_from = AvgPrice)
+                    
+dfWeekShortWide <- dfWeekShortWide %>% select(Trace, Year, Month, MonthWord, Weekday_OffPeak, Weekday_OnPeak, Weekend_OffPeak, Weekend_OnPeak)
+
+#Export the Wide format to CSV
+write.csv(dfWeekShortWide, "dfWeekShortWide.csv")
+kable(dfWeekShortWide)
