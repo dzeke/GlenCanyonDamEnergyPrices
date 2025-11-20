@@ -1,0 +1,5 @@
+"0","dfWeekShortWide <- dfWeekShortNarrow %>% pivot_wider(names_from = c(DayType, Period), values_from = AvgPrice)
+dfWeekShortWide <- dfWeekShortWide %>% select(-Trace, -Year, Month, MonthWord, Weekday_OffPeak, Weekday_OnPeak, Weekend_OffPeak, Weekend_OnPeak)
+"
+"1","[38;5;232mAdding missing grouping variables: `Year`, `Trace`[39m
+"

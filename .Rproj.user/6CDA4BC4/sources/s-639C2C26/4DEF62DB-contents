@@ -105,7 +105,7 @@ rm(list = ls())  #Clear history
 
 #Load packages in one go
   #List of packages
-  load.lib <- c("tidyverse", "readxl", "RColorBrewer", "dplyr", "expss", "reshape2", "pracma", "lubridate", "directlabels", "plyr", "stringr", "ggplot2")
+  load.lib <- c("tidyverse", "readxl", "RColorBrewer", "dplyr", "expss", "reshape2", "pracma", "lubridate", "directlabels", "plyr", "stringr", "ggplot2", "knitr", "tidyr")
 # Then we select only the packages that aren't currently installed.
   install.lib <- load.lib[!load.lib %in% installed.packages()]
 # And finally we install the missing packages, including their dependency.
@@ -539,14 +539,19 @@ ggplot(dfAllDataAvgPrice %>% filter(Day <= 7, Year == 2024, Trace == 1, Month %i
 # Figure 12. Average weekly on- and off-peak prices for weekdays and weekends of June, July, August, and September.
 
 ```{r GCDpricesFig12, echo=FALSE, warning=FALSE, message=FALSE}
-### Calculate an average price for all weekday and weekend on- and off-peak prices
-dfAllDataAvgWeekPrice <- dfAllData %>% dplyr::group_by(Year, Trace, Month, MonthWord, Period, DayType) %>% dplyr::summarise(AvgPrice = mean(Price))
+dfAllDataAvgPrice1Week <- dfAllDataAvgPrice %>% filter(Day <= 7, Year == 2024, Trace == 1)
+
+dfAllDataAvgPrice1Week$DayType <- ifelse((dfAllDataAvgPrice1Week$Day >= 2) & (dfAllDataAvgPrice1Week$Day <= 6), "Weekday", "Weekend")
+
+dfAllDataAvgWeekPrice <- dfAllDataAvgPrice1Week %>% dplyr::group_by(Year, Trace, Month, MonthWord, Period, DayType) %>% dplyr::summarise(AvgPrice = mean(AvgPrice))
+
+dfAllDataAvgWeekPriceFilter <- dfAllDataAvgWeekPrice %>% filter(Year == 2024, Trace == 1, Month %in% c(6,7,8,9))
 
 ## Add a field so we can plot 2 periods per day
 dfAllDataAvgWeekPrice$PeriodAsPartOfDay <- ifelse(dfAllDataAvgWeekPrice$Period == "Off-peak", nStartHourOffPeak/24, nEndHourOffPeak/24)
 
-## Add a field that adds time of day to the weekend and weekday types.
-dfAllDataAvgWeekPrice$PeriodAsPartOfWeek <- ifelse(dfAllDataAvgWeekPrice$DayType == "Weekend",1,2) + dfAllDataAvgWeekPrice$PeriodAsPartOfDay
+## Add a field 
+dfAllDataAvgWeekPrice$PeriodAsPartOfWeek <- ifelse(dfAllDataAvgWeekPrice$DayType == "Weekday",1,2) + dfAllDataAvgWeekPrice$PeriodAsPartOfDay
 
 ## Figure 12 - Average On-peak and off peak prices for first week selected months
 ggplot(dfAllDataAvgWeekPrice %>% filter(Year == 2024, Trace == 1, Month %in% c(6,7,8,9)), aes(x = PeriodAsPartOfWeek, y = AvgPrice, color = as.factor(MonthWord))) +
@@ -608,4 +613,27 @@ ggplot(dfAllDataAvgWeekPrice %>% filter(Year == 2024, Trace == 1, Month %in% c(3
   #theme(text = element_text(size=20), legend.title=element_blank(), legend.text=element_text(size=18),
   #      legend.position = c(0.8,0.7))
   theme(text = element_text(size=nMainSize-2), legend.title = element_blank(), legend.text=element_text(size=nLegendSize), axis.text.x = element_text(size=nAxisTickSize-4))
+```
+
+# Table of Weekday and Weekend Off-peak and On-peak Prices
+
+
+```{r GCDpricesTable1, echo=FALSE, warning=FALSE, message=FALSE}
+
+## Push the Weekend / Weekday on- and off-peak prices to a table
+dfWeekShortNarrow <- dfAllDataAvgWeekPrice %>% filter(Year == 2024, Trace == 1, Month %in% seq(3,10)) %>% select(Year, Month, MonthWord, Period, DayType, AvgPrice)
+## Reshape to Wide so we are looking at On-peak and Off-peak prices
+
+## Remove "-" In Period field
+dfWeekShortNarrow$Period <- ifelse(dfWeekShortNarrow$Period == "On-peak", "OnPeak", "OffPeak")
+# Shorten decimal point to 1
+dfWeekShortNarrow$AvgPrice <- round(dfWeekShortNarrow$AvgPrice, digits = 1)
+
+# Pivot to Wide
+dfWeekShortWide <- dfWeekShortNarrow %>% pivot_wider(names_from = c(DayType, Period), values_from = AvgPrice)
+dfWeekShortWide <- dfWeekShortWide[, c("Month", "MonthWord", "Weekday_OffPeak", "Weekday_OnPeak", "Weekend_OffPeak", "Weekend_OnPeak")]
+
+#Export the Wide format to CSV
+write.csv(dfWeekShortWide, "dfWeekShortAvgPriceWide.csv")
+kable(dfWeekShortWide)
 ```

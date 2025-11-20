@@ -3,7 +3,7 @@
     "path": "C:/Users/david/Box/ColoradoRiver/BugsPayForDaysSteadyFlows/Journal of Hydroinformatics/Resubmit2-Sept2025/EnergyPriceData/GCDEnergyPrices2/GCDEnergyPrice.Rmd",
     "project_path": "GCDEnergyPrice.Rmd",
     "type": "r_markdown",
-    "hash": "925377757",
+    "hash": "2194793726",
     "contents": "",
     "dirty": false,
     "created": 1763502231223.0,
@@ -12,15 +12,16 @@
     "properties": {
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "548,140",
-        "scrollLine": "536"
+        "cursorPosition": "554,0",
+        "scrollLine": "537",
+        "last_setup_crc32": "639C2C26bb338d19"
     },
     "folds": "",
-    "lastKnownWriteTime": 1763666825,
+    "lastKnownWriteTime": 1763675047,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1763666825504,
+    "last_content_update": 1763675047670,
     "read_only": false,
     "read_only_alternatives": []
 }

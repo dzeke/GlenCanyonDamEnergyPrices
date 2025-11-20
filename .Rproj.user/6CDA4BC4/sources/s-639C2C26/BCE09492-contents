@@ -402,6 +402,10 @@ ggplot(dfAllData %>% filter(Day <= 7, Year == 2024, Trace == 1, Month == 7), aes
 
 ### Calculate an average price for each day and period
 dfAllDataAvgPrice <- dfAllData %>% dplyr::group_by(Day, Year, Trace, Month, MonthWord, Period) %>% dplyr::summarise(AvgPrice = mean(Price))
+
+### Filter so looking at first week of each month
+dfAllDataAvgPriceFilter <- dfAllDataAvgPrice %>% filter(Year == 2024, Trace == 1, Day <= 7, Month >= 3, Month <= 10)
+
 ## Add a field so we can plot 2 periods per day
 dfAllDataAvgPrice$PeriodAsPartOfDay <- dfAllDataAvgPrice$Day + ifelse(dfAllDataAvgPrice$Period == "On-peak", nEndHourOffPeak/24, nStartHourOffPeak/24)
 
@@ -466,13 +470,22 @@ ggplot(dfAllDataAvgPrice %>% filter(Day <= 7, Year == 2024, Trace == 1, Month %i
 
 #### Figure 12 Average weekly on- and off-peak prices
 ### Calculate an average price for all weekday and weekend on- and off-peak prices
-dfAllDataAvgWeekPrice <- dfAllData %>% dplyr::group_by(Year, Trace, Month, MonthWord, Period, DayType) %>% dplyr::summarise(AvgPrice = mean(Price))
+
+#Calculate Weekday (Days 2 to 6) verses weekend (Days 1 and 7)
+# Pull out first week
+dfAllDataAvgPrice1Week <- dfAllDataAvgPrice %>% filter(Day <= 7, Year == 2024, Trace == 1)
+
+dfAllDataAvgPrice1Week$DayType <- ifelse((dfAllDataAvgPrice1Week$Day >= 2) & (dfAllDataAvgPrice1Week$Day <= 6), "Weekday", "Weekend")
+
+dfAllDataAvgWeekPrice <- dfAllDataAvgPrice1Week %>% dplyr::group_by(Year, Trace, Month, MonthWord, Period, DayType) %>% dplyr::summarise(AvgPrice = mean(AvgPrice))
+
+dfAllDataAvgWeekPriceFilter <- dfAllDataAvgWeekPrice %>% filter(Year == 2024, Trace == 1, Month %in% c(6,7,8,9))
 
 ## Add a field so we can plot 2 periods per day
 dfAllDataAvgWeekPrice$PeriodAsPartOfDay <- ifelse(dfAllDataAvgWeekPrice$Period == "Off-peak", nStartHourOffPeak/24, nEndHourOffPeak/24)
 
 ## Add a field 
-dfAllDataAvgWeekPrice$PeriodAsPartOfWeek <- ifelse(dfAllDataAvgWeekPrice$DayType == "Weekend",1,2) + dfAllDataAvgWeekPrice$PeriodAsPartOfDay
+dfAllDataAvgWeekPrice$PeriodAsPartOfWeek <- ifelse(dfAllDataAvgWeekPrice$DayType == "Weekday",1,2) + dfAllDataAvgWeekPrice$PeriodAsPartOfDay
 
 ## Figure 12 - Average On-peak and off peak price for first week selected months
 ggplot(dfAllDataAvgWeekPrice %>% filter(Year == 2024, Trace == 1, Month %in% c(6,7,8,9)), aes(x = PeriodAsPartOfWeek, y = AvgPrice, color = as.factor(MonthWord))) +
@@ -508,12 +521,13 @@ dfWeekShortNarrow <- dfAllDataAvgWeekPrice %>% filter(Year == 2024, Trace == 1, 
 ## Reshape to Wide so we are looking at On-peak and Off-peak prices
 
 ## Remove "-" In Period field
-
 dfWeekShortNarrow$Period <- ifelse(dfWeekShortNarrow$Period == "On-peak", "OnPeak", "OffPeak")
-dfWeekShortWide <- dfWeekShortNarrow %>% pivot_wider(names_from = c(DayType, Period), values_from = AvgPrice)
-                    
-dfWeekShortWide <- dfWeekShortWide %>% select(Trace, Year, Month, MonthWord, Weekday_OffPeak, Weekday_OnPeak, Weekend_OffPeak, Weekend_OnPeak)
+# Shorten decimal point to 1
+dfWeekShortNarrow$AvgPrice <- round(dfWeekShortNarrow$AvgPrice, digits = 1)
 
+# Pivot to Wide
+dfWeekShortWide <- dfWeekShortNarrow %>% pivot_wider(names_from = c(DayType, Period), values_from = AvgPrice)
+dfWeekShortWide <- dfWeekShortWide[, c("Month", "MonthWord", "Weekday_OffPeak", "Weekday_OnPeak", "Weekend_OffPeak", "Weekend_OnPeak")]
 #Export the Wide format to CSV
-write.csv(dfWeekShortWide, "dfWeekShortWide.csv")
+write.csv(dfWeekShortWide, "dfWeekShortAvgPriceWide.csv")
 kable(dfWeekShortWide)
