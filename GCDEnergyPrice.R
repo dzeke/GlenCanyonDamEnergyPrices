@@ -465,7 +465,7 @@ ggplot(dfAllDataAvgPrice %>% filter(Day <= 7, Year == 2024, Trace == 1, Month %i
 
 
 #### Figure 12 Average weekly on- and off-peak prices
-### Calculate an average price for all weekday on- and off-peak prices (day >=2 and day <= 6)
+### Calculate an average price for all weekday and weekend on- and off-peak prices
 dfAllDataAvgWeekPrice <- dfAllData %>% dplyr::group_by(Year, Trace, Month, MonthWord, Period, DayType) %>% dplyr::summarise(AvgPrice = mean(Price))
 
 ## Add a field so we can plot 2 periods per day

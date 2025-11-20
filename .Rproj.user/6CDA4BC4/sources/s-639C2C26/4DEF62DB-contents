@@ -1,50 +1,102 @@
-####################
-#     GCDEnergyPrice.R
-#     Glen Canyon Dam Energy Prices
-#
-#     This repository has the purpose to answer the question: How do energy prices at Glen Canyon Dam change by hour and month?
+---
+title: "Glen Canyon Dam Energy Prices"
+author: "David E. Rosenberg"
+date: "November 17, 2025"
+output: pdf_document
+---
 
-#      We use data from Bair, L., and Yackulic, C. (2024). "Predicted hydropower impacts of different management scenarios for Lake Powell releases." U.S. Geological Survey data release. https://doi.org/10.5066/P135BOD8.
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
 
-#     The Data Wrangling strategy is to:
-#       1. Read in the generation data for the No action alternative in the folder generation/generation_hourly_noaction.csv [MW-hour]
-#           This  FIRST file represents hourly generation at Glen Canyon Dam in megawatt hours by hour, month and hydrologic trace in the LTEM sEIS. The purpose of these data tables are to allow for a comparison of the difference in generation between LTEMP eEIS alternatives. Columns are hours in a month. Rows are month and 30 hydrologic traces. For example, the first 30 rows are the 30 hydrologic traces in the LTEMP sEIS (1991-2020) for the month of October 2023. Rows 31-60 are the 30 hydrologic traces in the LTEMP sEIS (1991-2020) for the month of November 2023. Rows 1471-1500 are the 30 hydrologic traces in the LTEMP sEIS (1991-2020) for the month of November 2027. The 11 data tables are separate 1500 by 744 matrices. The months with days less than 31 days contain "0" entries for those hours and days.</enttypd>
-#           Columns hour_1 to hour_744 in the data table represents megawatt hours by hour, month and hydrologic trace in the LTEM sEIS. Months with days less than 31 days contain "0" entries for those hours and days.</attrdef>
-#
-##      2. Read in the economic data for the No action alternative in the folder econ/econ_hourly_noaction.csv
-##           The SECOND file represents the economic value of energy generated at Glen Canyon Dam in nominal dollars by hour, month and hydrologic trace in the LTEM sEIS. The purpose of these data tables are to allow for a comparison of the difference in economic value between LTEMP sEIS alternatives. Columns are hours in a month. Rows are month and 30 hydrologic traces. For example, the first 30 rows are the 30 hydrologic traces in the LTEMP sEIS (1991-2020) for the month of October 2023. Rows 31-60 are the 30 hydrologic traces in the LTEMP sEIS (1991-2020) for the month of November 2023. Rows 1471-1500 are the 30 hydrologic traces in the LTEMP sEIS (1991-2020) for the month of November 2027. The 11 data tables are separate 1500 by 744 matrices. The months with days less than 31 days contain "0" entries for those hours and days.</enttypd>
-#            Columns hour_1 to hour_744 in the data table represent economic value by hour, month and hydrologic trace in the LTEM sEIS.</attrdef>
-  
-#       3. Add row labels to differentiate each row.
-#
-#       4. Convert the Generation and Econ data frames to Narrow format.
-#             So the generation data frame has Columns of [Year][Month][Trace][HourAsText][Generation]
-#             So  the Econ data frame has Columns of [Year][Month][Trace][HourAsText][Value]
-#
-#       5. Join the two tables on Year, Month, Trace, and HourAsText so we have a new data frame with columns [Year][Month][Trace][HourAsText][Generation][Value]
-#
-#       6. Convert the HourAsText from 1 to 744 to numerical hour, Calculate the day of month, hour of day, and on-peak/off-peak for each row.
-#
-#       7. Divide the Value column by Generation column to get a Price in $/MW-hour. Set rows with Zero generation to NA
-#
-#       8. Plot the pricing data in different formats.
-#
-#     Plots:
+## Description
 
-# Figure 1. Box and Whiskers of variation in prices for each month. This includes all scenarios and all weeks/days/hours/years.
-# Figure 2. Time series of prices for all years all months, years overlaid on each other.
-# Figure 3. Time series of prices for all traces for the first two weeks of August, 2023.
-# Figure 4. Time series of generation for all traces for the first two weeks of August 2023.
-# Figure 5. Time series of economic value for all traces for the first two weeks of August 2023, There is difference here, although all traces have the same shape, just different magnitudes.
-# Figure 6. Time series for 1st week of August 2024 separating on-peak prices from off-peak prices.
-# Figure 7. Time-series showing on-peak prices highlighted in blue and off-peak prices highlighted in red for a single week in August 2024. Note, these on-, off-peak definitions are for our study and look to be different that what is used in the current data set.
-# Figure 8. Time-series of prices showing the first week of June, July, August, and September for Year 2024, Trace 1.
-# Figure 9. Time series of first week of July 2024 showing on-peak and off-peak prices
-# Figure 10. Period average on-peak and off-peak prices for first week of June, July, August and September. #     David E. Rosenberg
-#     
-# David Rosenberg
-# November 17, 2025
-# david.rosenberg@usu.edu
+This is an R Markdown document. This repository has the purpose to answer the question: How do energy prices at Glen Canyon Dam change by hour and month?
+
+We use data from Bair, L., and Yackulic, C. (2024). "Predicted hydropower impacts of different management scenarios for Lake Powell releases." U.S. Geological Survey data release. https://doi.org/10.5066/P135BOD8.
+
+## More about the dataset.
+
+This dataset includes release, energy generation (MW-hour), and economic value of releases (nominal $ per hour) by hour of the day for each month of the year. Thus the data include peak hour of the day and peak hour of the week release, energy generation, and economic value.
+
+The data were used to estimate the economic effects of releases through Glen Canyon Dam to disrupt spawning of small mouth bass as part of a Supplemental Environmental Impact Statement 
+(SEIS) in 2023. The SEIS covers the period November 2023 to November 2027.
+
+The data are organized into separate folders titled "econ" "flow" and "generation." Each folder has 9 csv files representing current operations (_noaction) and 8 other flow scenarios. Each csv file is organized into 1501 rows and 744 columns as follows:
+
+1. Rows are Month and 30 hydrologic traces. For example, the first 30 rows are the 30 hydrologic traces in the LTEMP sEIS (1991-2020) for the month of October 2023. Rows 31-60 are the 30 hydrologic traces in the LTEMP sEIS (1991-2020) for the month of November 2023
+   Rows 1471-1500 are the 30 hydrologic traces in the LTEMP sEIS (1991-2020) for the month of November 2027.
+2. Columns are the 744 hours in a month (hour_1, hour_2, ... hour_744).
+
+Data for week 1 of the month (hours 1 to 168) are representative and thus replicated over weeks 2 to 4 of the month.
+
+Our analysis focuses on the No Action Alternative (econ_hourly_noaction.csv, flow_hourly_noaction.csv, and generation_hourly_noaction.csv) as we are most interested in energy prices which are the same across all the alternatives. Additionally, we are interested in the econ and economic value data as we
+use these two values to compute the energy price ($ per MW-hour).
+
+## Data wrangling strategy
+
+1. Read in the generation data for the No action alternative in the folder generation/generation_hourly_noaction.csv [MW-hour].
+This  FIRST file represents hourly generation at Glen Canyon Dam in megawatt hours by hour, month and hydrologic trace in the LTEM sEIS. The purpose of these data tables are to allow for a comparison of the difference in generation between LTEMP eEIS alternatives. Columns are hours in a month. Rows are month and 30 hydrologic traces. For example, the first 30 rows are the 30 hydrologic traces in the LTEMP sEIS (1991-2020) for the month of October 2023. Rows 31-60 are the 30 hydrologic traces in the LTEMP sEIS (1991-2020) for the month of November 2023. Rows 1471-1500 are the 30 hydrologic traces in the LTEMP sEIS (1991-2020) for the month of November 2027. The 11 data tables are separate 1500 by 744 matrices. The months with days less than 31 days contain "0" entries for those hours and days.
+
+Columns hour_1 to hour_744 in the data table represents megawatt hours by hour, month and hydrologic trace in the LTEM sEIS. Months with days less than 31 days contain "0" entries for those hours and days.
+
+1. Read in the economic data for the No action alternative in the folder econ/econ_hourly_noaction.csv
+           The SECOND file represents the economic value of energy generated at Glen Canyon Dam in nominal dollars by hour, month and hydrologic trace in the LTEM sEIS. The purpose of these data tables are to allow for a comparison of the difference in economic value between LTEMP sEIS alternatives. Columns are hours in a month. Rows are month and 30 hydrologic traces. For example, the first 30 rows are the 30 hydrologic traces in the LTEMP sEIS (1991-2020) for the month of October 2023. Rows 31-60 are the 30 hydrologic traces in the LTEMP sEIS (1991-2020) for the month of November 2023. Rows 1471-1500 are the 30 hydrologic traces in the LTEMP sEIS (1991-2020) for the month of November 2027. The 11 data tables are separate 1500 by 744 matrices. The months with days less than 31 days contain "0" entries for those hours and days.</enttypd>
+            Columns hour_1 to hour_744 in the data table represent economic value by hour, month and hydrologic trace in the LTEM sEIS.</attrdef>
+
+## Data wrangling strategy  
+1. Add row labels to differentiate each row (Month and Year and scenario) since the original data have no row labels.
+
+1. Convert the Generation and Econ data frames to Narrow format. So the generation data frame has Columns of [Year][Month][Trace][HourAsText][Generation]. Similarly, so the Econ data frame has Columns of [Year][Month][Trace][HourAsText][$ value]
+
+1. Join the two tables on Year, Month, Trace, and HourAsText so we have a new data frame with columns [Year][Month][Trace][HourAsText][Generation][$ value].
+
+1. Convert the HourAsText from 1 to 744 to numerical hour, Calculate the day of month, hour of day, and on-peak/off-peak for each row. Also, whether a day is weekend or weekday.
+
+1. Divide the [$ Value] column by [Generation] column to get a Price in $/MW-hour. Set rows with Zero generation to NA.
+
+1. Plot the pricing data in different formats.
+ 
+## Plots generated
+
+1. Box and Whiskers of variation in prices for each month. This includes all scenarios and all weeks/days/hours/years.
+1. Time series of prices for all years all months, years overlaid on each other.
+1. Time series of prices for all traces for the first two weeks of August, all years overlaid on each other.
+1. Time series of generation for all traces for the first two weeks of August 2024.
+1. Time series of economic value for all traces for the first two weeks of August 2024, There is difference here, although all traces have the same shape, just different magnitudes.
+1. Time-series showing on-peak prices highlighted in blue and off-peak prices highlighted in red for a single week in August 2024. Note, these on-, off-peak definitions are for our study and look to be different that what is used in the current data set.
+1. Time-series showing the first week of prices each month.
+1. Time-series of prices showing the first week of June, July, August, and September for Year 2024, Trace 1.
+1. Time series of first week of July 2024 showing on-peak and off-peak prices
+1. Period average on-peak and off-peak prices for first week of June, July, August and September.
+1. Period average on-peak and off-peak prices for first week of March, April, May, and October.
+1. Average weekly on- and off-peak prices for weekdays and weekends in the first week of June, July, August, and September.
+1. Average weekly on- and off-peak prices for weekdays and weekends of the first week in March, April, May, and October.
+
+## Findings
+
+1. Energy prices, including peak hour of the week prices are less than $100/MW-hour for months March, April, May, and June. For July through October, the predominate prices are also less than $100/MW-hour with a few
+outliers greater than $100/MW-hr up to $325/MW-hr (August) (Figure 1).
+1. There is a small increase in energy prices year-to-year. i.e., ~ $10/MW-hr increase from 2024 to 2027 (Figure 2).
+1. There is no variation in energy prices across the 30 traces (as expected, Figure 3). Peak prices are also on the 3rd and 4th day of the week. Week 2 prices are the same as week 1 prices (also as expected since the 1st week is representative and prices are copied over to weeks 2 to 4).
+1. Energy generation for traces do vary in magnitude but have the same overall shape. Again, week 2 generation is the same as week 1 generation (Figure 4).
+1. Economic value for traces also differ in magnitude but have the same overall shape. Again, week 2 generation is the same as week 1 generation (Figure 5).
+1. Figure 6 - come back to
+1. Results largely confirm Figure 1 findings with March, April, May, and June all prices below $100/MW-hour. And a few peak-hour-of-the week prices greater than $150/MW-hour for remaining month of July to October.
+1. Weekly prices for Months June, July, August and September have the same weekly pattern, just different magnitudes with August having the highest prices (Figure 8).
+1. On-peak prices exceed $100/MW-hour for only 3 or 4 hours each day (Figure 9)
+1. On-peak average prices only exceed $100/MW-hour during 3 days per week for the first week of August and 1 day per week for the first week in September (Figure 10). All other peak peridos are less than $100/MW-hour and in many months less than $75/MW-hour.
+
+
+## Requested Citation
+David E. Rosenberg (2025), “How do energy prices at Glen Canyon Dam change by hour and month.” Utah State University. Logan, Utah.
+https://github.com/dzeke/GlenCanyonDamEnergyPrices.
+
+## Questions to:
+David Rosenberg
+david.rosenberg@usu.edu / http://rosenberg.usu.edu
+
+```{r GCDprices, echo=FALSE, warning=FALSE, message=FALSE}
 
 #################
 
@@ -60,7 +112,6 @@ rm(list = ls())  #Clear history
   for(lib in install.lib) install.packages(lib,dependencies=TRUE)
   # After the installation process completes, we load all packages.
   sapply(load.lib,require,character=TRUE)
-
 
 
 ### Steps #1 and #2. Read in the Generation and Economic Data
@@ -88,6 +139,7 @@ dfGenerationData$Trace <- cTraces
 dfEconData$Year <- cYears
 dfEconData$Month <- cMonths
 dfEconData$Trace <- cTraces
+
 
 ### Step 4. Convert the data frames to narrow format
 #             So the generation data frame has Columns of [Year][Month][Trace][Hour][Generation]
@@ -140,19 +192,23 @@ nStartHourOffPeak <- 6
 nEndHourOffPeak <- nStartHourOffPeak + 8
 dfAllData$Period <- ifelse((dfAllData$Hour >= nStartHourOffPeak) & (dfAllData$Hour <= nEndHourOffPeak), "Off-peak", "On-peak")
 
-#Calculate Weekday (Days 2 to 6) verses weekend (Days 1 and 7)
+#Calculate Weekday (Days 2 to 6, Monday to Friday) verses weekend (Days 1 and 7, Sunday and Saturday)
 dfAllData$DayType <- ifelse((dfAllData$DayOfWeek >= 2) & (dfAllData$DayOfWeek <= 6), "Weekday", "Weekend")
+
 
 cColorsToPlot <- brewer.pal(9, "Blues")
 #cColorsToPlot <- colorRampPalette((brewer.pal(9, "Blues"))(10 - 3 + 1))
 
 #Font sizes for different components of the plot
-nAxisTickSize <- 16
-nLegendSize <- 16
-nMainSize <- 20
+nAxisTickSize <- 14
+nLegendSize <- 14
+nMainSize <- 16
 
 
+```
 
+# Figure 1. Box and Whiskers of variation in prices for each month. This includes all scenarios and all weeks/days/hours/years.
+```{r GCDpricesFig1, echo=FALSE, warning=FALSE, message=FALSE}
 
 #### Figure 1 - Box and whiskers by month 
 # Insight - March, April, May, June, and October all have low and reletively stable prices.
@@ -178,6 +234,11 @@ ggplot(dfAllData %>% filter(Month >= 3, Month <= 10), aes(x = as.factor(Month), 
   theme(text = element_text(size=nMainSize), legend.title = element_text("Month"), legend.text=element_text(size=nLegendSize), axis.text.x = element_text(size=nAxisTickSize))
 
 
+```
+
+# Figure 2. Time series of prices for all years all months, years overlaid on each other.
+
+```{r GCDpricesFig2, echo=FALSE, warning=FALSE, message=FALSE}
 ### Figure 2 - compare time series across years
 ggplot(dfAllData %>% filter(Month >= 6, Month <= 10), aes(x = DateTimeSingleYear, y = Price, color = as.factor(Year))) +
   
@@ -199,9 +260,11 @@ ggplot(dfAllData %>% filter(Month >= 6, Month <= 10), aes(x = DateTimeSingleYear
   #theme(text = element_text(size=20), legend.title=element_blank(), legend.text=element_text(size=18),
   #      legend.position = c(0.8,0.7))
   theme(text = element_text(size=nMainSize), legend.title = element_blank(), legend.text=element_text(size=nLegendSize), axis.text.x = element_text(size=nAxisTickSize))
+```
 
-print(wday("2024-08-01"), label = FALSE)
+# Figure 3. Time series of prices for all traces for the first two weeks of August, all years overlaid on each other.
 
+```{r GCDpricesFig3, echo=FALSE, warning=FALSE, message=FALSE}
 ### Figure 3 - daily time series August
 # Insight - Year only bumps up price a small amount. Weekly pattern repeats
 ggplot(dfAllData %>% filter(Month == 8, Day <= 14), aes(x = DateTimeSingleYear, y = Price, color = as.factor(Year))) +
@@ -225,8 +288,12 @@ ggplot(dfAllData %>% filter(Month == 8, Day <= 14), aes(x = DateTimeSingleYear, 
   #      legend.position = c(0.8,0.7))
   theme(text = element_text(size=nMainSize), legend.title = element_blank(), legend.text=element_text(size=nLegendSize), axis.text.x = element_text(size=nAxisTickSize))
 
-### Figure 4 - Look at changing prices across traces
-# Insight - No variability
+```
+
+# Figure 4. Time series of generation for all traces for the first two weeks of August 2024.
+
+```{r GCDpricesFig4, echo=FALSE, warning=FALSE, message=FALSE}
+
 ggplot(dfAllData %>% filter(Month == 8, Day <= 14, Year == 2024), aes(x = DateTimeSingleYear, y = Price, color = as.factor(Trace))) +
   
   geom_line() +
@@ -248,31 +315,12 @@ theme_bw() +
   #      legend.position = c(0.8,0.7))
   theme(text = element_text(size=nMainSize), legend.title = element_text(size = nLegendSize), legend.text=element_text(size=nLegendSize), axis.text.x = element_text(size=nAxisTickSize))
 
-### Figure 4 - Look at changing generation across traces
-# Insight - THere is varaibility. Same shape across traces, variability in magnitude
-ggplot(dfAllData %>% filter(Month == 8, Day <= 14, Year == 2024), aes(x = DateTimeSingleYear, y = Generation, color = as.factor(Trace))) +
-  
-  geom_line() +
-  
-  #facet_wrap(~ Month) +
-  
-  #scale_color_manual(values = cColorsToPlot[3,5,7, 8, 9]) +
-  #scale_linetype_manual(values = c("solid","longdash")) +
-  
-  #scale_x_continuous(1, 7*24, breaks = seq(1,7*24,24), labels = unique(dfAllData$DayOfWeekWord)) +
-  
-  #Make one combined legend
-  #guides(color = guide_legend(""), linetype = guide_legend("")) +
-  
-  theme_bw() +
-  
-  labs(x="", y = "Generation\n(MW-hr)", color = "Trace") +
-  #theme(text = element_text(size=20), legend.title=element_blank(), legend.text=element_text(size=18),
-  #      legend.position = c(0.8,0.7))
-  theme(text = element_text(size=nMainSize), legend.title = element_text(size = nLegendSize), legend.text=element_text(size=nLegendSize), axis.text.x = element_text(size=nAxisTickSize))
 
-### Figure 5 - Look at changing economics across traces
-# Insight - THere is varaibility. Same shape across traces, variability in magnitude
+```
+
+# Figure 5. Time series of economic value for all traces for the first two weeks of August 2024
+
+```{r GCDpricesFig5, echo=FALSE, warning=FALSE, message=FALSE}
 ggplot(dfAllData %>% filter(Month == 8, Day <= 14, Year == 2024), aes(x = DateTimeSingleYear, y = DollarValue, color = as.factor(Trace))) +
   
   geom_line() +
@@ -295,8 +343,12 @@ theme_bw() +
   theme(text = element_text(size=nMainSize), legend.title = element_text(size = nLegendSize), legend.text=element_text(size=nLegendSize), axis.text.x = element_text(size=nAxisTickSize))
 
 
-### Figure 6 - Look at changing prices on- and off-peak for a single week of August 2024
-# Insight - No variability
+```
+
+# Figure 6. Time-series showing on-peak prices highlighted in blue and off-peak prices highlighted in red for a single week in August 2024.
+
+```{r GCDpricesFig6, echo=FALSE, warning=FALSE, message=FALSE}
+
 ggplot(dfAllData %>% filter(Month == 8, Day <= 7, Year == 2024, Trace == 1), aes(x = DateTimeSingleYear, y = Price, color = as.factor(Period))) +
   
   geom_line() +
@@ -319,7 +371,12 @@ ggplot(dfAllData %>% filter(Month == 8, Day <= 7, Year == 2024, Trace == 1), aes
   #      legend.position = c(0.8,0.7))
   theme(text = element_text(size=nMainSize), legend.title = element_blank(), legend.text=element_text(size=nLegendSize), axis.text.x = element_text(size=nAxisTickSize))
 
-### Figure 7 - Compare weekly prices by month for the first week of the month
+```
+
+# Figure 7. Time-series showing the first week of prices each month.
+
+```{r GCDpricesFig7, echo=FALSE, warning=FALSE, message=FALSE}
+
 ggplot(dfAllData %>% filter(Day <= 7, Year == 2024, Trace == 1), aes(x = DateTimeSingleYear, y = Price, color = as.factor(Month))) +
   
   geom_line() +
@@ -343,8 +400,12 @@ theme_bw() +
   theme(text = element_text(size=nMainSize), legend.title = element_blank(), legend.text=element_text(size=nLegendSize), axis.text.x = element_text(size=nAxisTickSize))
 
 
+```
 
-### Figure 8 - Overlap monthly prices on same week
+# Figure 8. Time-series of prices showing the first week of June, July, August, and September for Year 2024, Trace 1.
+
+```{r GCDpricesFig8, echo=FALSE, warning=FALSE, message=FALSE}
+
 ggplot(dfAllData %>% filter(Day <= 7, Year == 2024, Trace == 1, Month >= 6, Month <= 9), aes(x = HourInMonth, y = Price, color = as.factor(MonthWord), shape = as.factor(MonthWord))) +
   
   geom_line() +
@@ -371,9 +432,12 @@ theme_bw() +
   #      legend.position = c(0.8,0.7))
   theme(text = element_text(size=nMainSize), legend.title = element_blank(), legend.text=element_text(size=nLegendSize), axis.text.x = element_text(size=nAxisTickSize))
 
+```
 
+# Figure 9. Time series of first week of July 2024 showing on-peak and off-peak prices
 
-### Figure 9 - Show On-peak, off peak for first week of a single month
+```{r GCDpricesFig9, echo=FALSE, warning=FALSE, message=FALSE}
+
 ggplot(dfAllData %>% filter(Day <= 7, Year == 2024, Trace == 1, Month == 7), aes(x = HourInMonth, y = Price)) +
   
   geom_line() +
@@ -399,8 +463,13 @@ ggplot(dfAllData %>% filter(Day <= 7, Year == 2024, Trace == 1, Month == 7), aes
   #      legend.position = c(0.8,0.7))
   theme(text = element_text(size=nMainSize), legend.title = element_blank(), legend.text=element_text(size=nLegendSize), axis.text.x = element_text(size=nAxisTickSize))
 
+```
 
-### Calculate an average price for each day and period
+# Figure 10. Period average on-peak and off-peak prices for first week of June, July, August and September
+
+```{r GCDpricesFig10, echo=FALSE, warning=FALSE, message=FALSE}
+
+### Calculate an average price for each period
 dfAllDataAvgPrice <- dfAllData %>% dplyr::group_by(Day, Year, Trace, Month, MonthWord, Period) %>% dplyr::summarise(AvgPrice = mean(Price))
 ## Add a field so we can plot 2 periods per day
 dfAllDataAvgPrice$PeriodAsPartOfDay <- dfAllDataAvgPrice$Day + ifelse(dfAllDataAvgPrice$Period == "On-peak", nEndHourOffPeak/24, nStartHourOffPeak/24)
@@ -408,7 +477,7 @@ dfAllDataAvgPrice$PeriodAsPartOfDay <- dfAllDataAvgPrice$Day + ifelse(dfAllDataA
 nStartMonth <- 6
 nEndMonth <- 9
 
-### Figure 10 - Average On-peak and off peak price for first week of selected months
+### Figure 10 - Average On-peak and off peak price for first week of a single month
 ggplot(dfAllDataAvgPrice %>% filter(Day <= 7, Year == 2024, Trace == 1, Month >= nStartMonth, Month <= nEndMonth), aes(x = PeriodAsPartOfDay, y = AvgPrice, color = as.factor(MonthWord))) +
   
   geom_step(direction = "hv", size = 2) +
@@ -434,7 +503,11 @@ ggplot(dfAllDataAvgPrice %>% filter(Day <= 7, Year == 2024, Trace == 1, Month >=
   #      legend.position = c(0.8,0.7))
   theme(text = element_text(size=nMainSize), legend.title = element_blank(), legend.text=element_text(size=nLegendSize), axis.text.x = element_text(size=nAxisTickSize))
 
+```
 
+# Figure 11. Period average on-peak and off-peak prices for first week of March, April, May, and October
+
+```{r GCDpricesFig11, echo=FALSE, warning=FALSE, message=FALSE}
 
 ## Figure 11 - Average On-peak and off peak price for first week selected months
 ggplot(dfAllDataAvgPrice %>% filter(Day <= 7, Year == 2024, Trace == 1, Month %in% c(3,4,5,10)), aes(x = PeriodAsPartOfDay, y = AvgPrice, color = as.factor(MonthWord))) +
@@ -461,20 +534,21 @@ ggplot(dfAllDataAvgPrice %>% filter(Day <= 7, Year == 2024, Trace == 1, Month %i
   #theme(text = element_text(size=20), legend.title=element_blank(), legend.text=element_text(size=18),
   #      legend.position = c(0.8,0.7))
   theme(text = element_text(size=nMainSize), legend.title = element_blank(), legend.text=element_text(size=nLegendSize), axis.text.x = element_text(size=nAxisTickSize))
+```
 
+# Figure 12. Average weekly on- and off-peak prices for weekdays and weekends of June, July, August, and September.
 
-
-#### Figure 12 Average weekly on- and off-peak prices
-### Calculate an average price for all weekday on- and off-peak prices (day >=2 and day <= 6)
+```{r GCDpricesFig12, echo=FALSE, warning=FALSE, message=FALSE}
+### Calculate an average price for all weekday and weekend on- and off-peak prices
 dfAllDataAvgWeekPrice <- dfAllData %>% dplyr::group_by(Year, Trace, Month, MonthWord, Period, DayType) %>% dplyr::summarise(AvgPrice = mean(Price))
 
 ## Add a field so we can plot 2 periods per day
 dfAllDataAvgWeekPrice$PeriodAsPartOfDay <- ifelse(dfAllDataAvgWeekPrice$Period == "Off-peak", nStartHourOffPeak/24, nEndHourOffPeak/24)
 
-## Add a field 
+## Add a field that adds time of day to the weekend and weekday types.
 dfAllDataAvgWeekPrice$PeriodAsPartOfWeek <- ifelse(dfAllDataAvgWeekPrice$DayType == "Weekend",1,2) + dfAllDataAvgWeekPrice$PeriodAsPartOfDay
 
-## Figure 12 - Average On-peak and off peak price for first week selected months
+## Figure 12 - Average On-peak and off peak prices for first week selected months
 ggplot(dfAllDataAvgWeekPrice %>% filter(Year == 2024, Trace == 1, Month %in% c(6,7,8,9)), aes(x = PeriodAsPartOfWeek, y = AvgPrice, color = as.factor(MonthWord))) +
  
   geom_step(direction = "hv", size = 2) +
@@ -497,8 +571,41 @@ ggplot(dfAllDataAvgWeekPrice %>% filter(Year == 2024, Trace == 1, Month %in% c(6
   
   theme_bw() +
   
-  labs(x="Day of the Week", y = "Average Period Price\n($/MW-hr)") +
+  labs(x="", y = "Average Price\n($/MW-hr)") +
   #theme(text = element_text(size=20), legend.title=element_blank(), legend.text=element_text(size=18),
   #      legend.position = c(0.8,0.7))
-  theme(text = element_text(size=nMainSize), legend.title = element_blank(), legend.text=element_text(size=nLegendSize), axis.text.x = element_text(size=nAxisTickSize))
+  theme(text = element_text(size=nMainSize-2), legend.title = element_blank(), legend.text=element_text(size=nLegendSize), axis.text.x = element_text(size=nAxisTickSize-4))
 
+```
+
+# Figure 13 - Average On-peak and off-peak prices for weekdays and weekends of first week of March, April, May, and October.
+
+```{r GCDpricesFig13, echo=FALSE, warning=FALSE, message=FALSE}
+## Figure 13 - Average On-peak and off peak prices for first week selected months
+ggplot(dfAllDataAvgWeekPrice %>% filter(Year == 2024, Trace == 1, Month %in% c(3, 4, 5, 10)), aes(x = PeriodAsPartOfWeek, y = AvgPrice, color = as.factor(MonthWord))) +
+ 
+  geom_step(direction = "hv", size = 2) +
+  #geom_point(aes(shape = as.factor(MonthWord)), size = 5) +
+  
+  #Show on-peak, off peak
+  #geom_point(aes(y = 20, marker = Period), size = 2) +
+  
+  #facet_wrap(~ Month) +
+  
+  scale_color_manual(values = cColorsToPlot[seq(3,9,2)]) +
+  #scale_linetype_manual(values = c("solid","longdash")) +
+  
+  #scale_x_continuous(limits = c(1.25,3.25), breaks = c(1.25,1.58,2.25,2.58), labels = c("Weekday\nOff-peak", "Weekday\nOn-peak", "Weekend\nOff-peak", "Weekend\nOn-peak")) +
+  scale_x_continuous(limits = c(1.25,2.9), breaks = c(mean(c(1.25,1.58)), mean(c(1.58,2.25)), mean(c(2.25,2.58)), mean(c(2.58,2.95))), labels = c("Weekday\nOff-peak", "Weekday\nOn-peak", "Weekend\nOff-peak", "Weekend\nOn-peak")) +
+  
+    
+  #Make one combined legend
+  #guides(color = guide_legend(""), linetype = guide_legend("")) +
+  
+  theme_bw() +
+  
+  labs(x="", y = "Average Price\n($/MW-hr)") +
+  #theme(text = element_text(size=20), legend.title=element_blank(), legend.text=element_text(size=18),
+  #      legend.position = c(0.8,0.7))
+  theme(text = element_text(size=nMainSize-2), legend.title = element_blank(), legend.text=element_text(size=nLegendSize), axis.text.x = element_text(size=nAxisTickSize-4))
+```
