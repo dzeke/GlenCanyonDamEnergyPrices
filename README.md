@@ -1,4 +1,4 @@
-# Glen Canyon Dam Energy Prices from 2024 SEIS
+# How do energy prices at Glen Canyon Dam change by hour and month
 
 This repository has the purpose to answer the question: How do energy prices at Glen Canyon Dam change by hour and month?
 
@@ -106,4 +106,4 @@ Open the file **[GCDEnergyPrice.pdf](GCDEnergyPrice.pdf)**
 
 
 ## Requested Citation
-David E. Rosenberg (2025). "Glen Canyon Dam Energy Prices from 2024 SEI". Utah State University. Logan, Utah. https://github.com/dzeke/GlenCanyonDamEnergyPrices.
+David E. Rosenberg (2025). "How do energy prices at Glen Canyon Dam change by hour and month". Utah State University. Logan, Utah. https://github.com/dzeke/GlenCanyonDamEnergyPrices.
