@@ -1,4 +1,4 @@
-# How do energy prices at Glen Canyon Dam change by hour and month
+# How do energy prices at Glen Canyon Dam change by hour and month?
 
 This repository has the purpose to answer the question: How do energy prices at Glen Canyon Dam change by hour and month?
 
@@ -102,6 +102,6 @@ Open the file **[GCDEnergyPrice.pdf](GCDEnergyPrice.pdf)**
 1. **generation** -- Folder containing data on the energy generation (MW-hour) of all scenarios, months, years, and hour of the monnth.
 
 ## Requested Citation
-David E. Rosenberg (2025), “How do energy prices at Glen Canyon Dam change by hour and month.” Utah State University. Logan, Utah.
+David E. Rosenberg (2025), “How do energy prices at Glen Canyon Dam change by hour and month?” Utah State University. Logan, Utah.
 https://github.com/dzeke/GlenCanyonDamEnergyPrices.
 
