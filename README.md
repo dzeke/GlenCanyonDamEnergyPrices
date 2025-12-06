@@ -1,4 +1,4 @@
-# Glen Canyon Dam Energy Prices
+# Glen Canyon Dam Energy Prices from 2024 SEIS
 
 This repository has the purpose to answer the question: How do energy prices at Glen Canyon Dam change by hour and month?
 
@@ -56,8 +56,8 @@ So  the Econ data frame has Columns of [Year][Month][Trace][HourAsText][Value]
 1. Time series of generation for all traces for the first two weeks of August 2024.
 1. Time series of economic value for all traces for the first two weeks of August 2024, There is difference here, although all traces have the same shape, just different magnitudes.
 1. Time-series showing on-peak prices highlighted in blue and off-peak prices highlighted in red for a single week in August 2024. Note, these on-, off-peak definitions are for our study and look to be different that what is used in the current data set.
+1. Time-series showing the first week of prices each month.
 1. Time-series of prices showing the first week of June, July, August, and September for Year 2024, Trace 1.
-1. Time-series of monthly prices on the same week.
 1. Time series of first week of July 2024 showing on-peak and off-peak prices
 1. Period average on-peak and off-peak prices for first week of June, July, August and September. 
 
@@ -106,4 +106,4 @@ Open the file **[GCDEnergyPrice.pdf](GCDEnergyPrice.pdf)**
 
 
 ## Requested Citation
-David E. Rosenberg (2020). "Powell Monthly Releases". Utah State University. Logan, Utah. https://github.com/dzeke/ColoradoRiverCollaborate/tree/main/PowellMonthlyRelease.
+David E. Rosenberg (2025). "Glen Canyon Dam Energy Prices from 2024 SEI". Utah State University. Logan, Utah. https://github.com/dzeke/GlenCanyonDamEnergyPrices.
