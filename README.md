@@ -76,10 +76,6 @@ outliers greater than $100/MW-hr up to $325/MW-hr (August) (Figure 1).
 1. On-peak prices exceed $100/MW-hour for only 3 or 4 hours each day (Figure 9)
 1. On-peak average prices only exceed $100/MW-hour during 3 days per week for the first week of August and 1 day per week for the first week in September (Figure 10). All other peak peridos are less than $100/MW-hour and in many months less than $75/MW-hour.
 
-## Requested Citation
-David E. Rosenberg (2025), “How do energy prices at Glen Canyon Dam change by hour and month.” Utah State University. Logan, Utah.
-https://github.com/dzeke/GlenCanyonDamEnergyPrices.
-
 ## View Results
 Open the file **[GCDEnergyPrice.pdf](GCDEnergyPrice.pdf)**
 
@@ -100,10 +96,12 @@ Open the file **[GCDEnergyPrice.pdf](GCDEnergyPrice.pdf)**
 1. **GCDEnergyPrice.r** - R file with same code as **GCDEnergyPrice.Rmd** but pushes results to console. Use for testing code.
 1. **PowellMonthlyRelease.Rproject** - R project file. Use to open the project in R Studio.
 1. **Powell-MonthlyReleaseSchedule.txt** - Comma seperated values (CSV) file with data downloaded from CRSS slot Powell.MonthlyReleaseTable. Rows are month of the year. Columns are annual release target. All values million acre-feet.
+1. **Energy_Rates_2014.xlsx** - Excel file with Contract and market prices by month used in this study, a summary of all months, and comparison to period average prices from the data by Bair and Yackulic (2024). 
 1. **econ** -- Folder containing data on the economic value (Nominal $$) for all scenarios, months, years, and hour of the month.
 1. **flow** -- Folder containing data on the Glen Canyon dam releases for all scenarios, months, years, and hour of the monnth.
 1. **generation** -- Folder containing data on the energy generation (MW-hour) of all scenarios, months, years, and hour of the monnth.
 
-
 ## Requested Citation
-David E. Rosenberg (2025). "How do energy prices at Glen Canyon Dam change by hour and month". Utah State University. Logan, Utah. https://github.com/dzeke/GlenCanyonDamEnergyPrices.
+David E. Rosenberg (2025), “How do energy prices at Glen Canyon Dam change by hour and month.” Utah State University. Logan, Utah.
+https://github.com/dzeke/GlenCanyonDamEnergyPrices.
+
